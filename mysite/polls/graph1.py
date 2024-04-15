@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 plt.rcParams['font.family'] ='Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] =False
 #기온, 풍속, 강수량
-#오늘 1일전 2일전 일주일전
+#오늘 1일전 2일전 일주일전 - 
+#24시간 1시간단위로 수정 - x축
 x = ['7일전','2일','1일전','오늘']
 a1 = [10,20,50,20]         
 a2 = [30,20,40,10]
