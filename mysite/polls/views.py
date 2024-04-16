@@ -3,10 +3,13 @@ import urllib.request
 from xml.dom.minidom import parseString
 import xml.dom.minidom
 from .models import forecastData , Rainpercent , Wind
+from django.shortcuts import render
 # Create your views here.
 
 def index(request) :
-    return HttpResponse('Hello')
+    month_text = request.GET.get('sido')
+    #board_list = Board.objects.filter(month=month_text)
+    return render(request, 'index.html')
 
 
 
