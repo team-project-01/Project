@@ -29,6 +29,7 @@ def temperature():
     plt.ylabel("Temperatures (°C)")
     plt.xlabel("Time (h)")
 
+    graph_path = ''
     plt.savefig('graphs\temp_graph.png', format='png')
 
 
