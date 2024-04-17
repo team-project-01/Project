@@ -17,7 +17,7 @@ def index(request) :
 
 def some_url(request) :
     return HttpResponse('some url구현')
-  
+
 #결과 페이지 연결
 @csrf_exempt
 def result(request):
@@ -29,12 +29,7 @@ def VilageFcstInfoService(a):
     encodingKey = 'QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D'
     # request url 정의
 
-    url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?ServiceKey=" + \
-    encodingKey + \
-    '&pageNo=1&numOfRows=1000&dataType=XML' + \
-    '&base_date=20240415' + \
-    '&base_time=0200' + \
-    '&nx=60&ny=127'
+    url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?ServiceKey=QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D&pageNo=1&numOfRows=100&dataType=XML&base_date=20240417&base_time=1400&nx=60&ny=120"
     
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
@@ -78,6 +73,7 @@ def VilageFcstInfoService(a):
         return HttpResponse(result)  # 문자열을 HttpResponse에 전달
     else: # 실패시 -> 에러코드 출력
         return HttpResponse("Error Code:" + str(rescode))
+    
 def graph(request):
     context = {'place': '서울'}
     # 템플릿에 context를 전달
