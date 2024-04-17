@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from .utils import today_weather_data, yesterday_weather_data
 import urllib.request
 from xml.dom.minidom import parseString
 import xml.dom.minidom
@@ -25,6 +26,12 @@ def result(request):
     return render(request, 'result.html', {'area2': area2})
 
 
+
+def fetch_weather(request):
+    a = today_weather_data(108)
+    return HttpResponse(a)
+  
+  
 def VilageFcstInfoService(a):
     encodingKey = 'QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D'
     # request url 정의
@@ -78,3 +85,4 @@ def graph(request):
     context = {'place': '서울'}
     # 템플릿에 context를 전달
     return render(request, 'polls/graph.html', context)
+
