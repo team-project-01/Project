@@ -223,7 +223,6 @@ def yesterday_weather_data(index):
             fcstTime = elem.getElementsByTagName('fcstTime')[0].firstChild.data[:2]
             fcstValue = elem.getElementsByTagName('fcstValue')[0].firstChild.data
             category = elem.getElementsByTagName('category')[0].firstChild.data
-            result += f'{fcstDate} {fcstTime}시 {category} : {fcstValue}\n'
             if category == 'TMP':
                 result += f"{fcstDate[:4]}년 {fcstDate[4:6]}월 {fcstDate[6:]}일 {fcstTime} 시의 온도는 {fcstValue}도 이다. <br>"  # 예보 날짜, 시간, 값, 카테고리를 문자열에 추가하고 각 값 뒤에 줄바꿈 추가
                 # 데이터베이스에 저장
@@ -236,7 +235,9 @@ def yesterday_weather_data(index):
                 forecast.fnx = nx
                 forecast.fny = ny
                 forecast.save()  # 객체 저장
-            if category == 'POP': 
+            if category == 'POP':
+                if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
                 gangsu = Rainpercent()
                 gangsu.fcstDate = fcstDate
                 gangsu.fcstTime = fcstTime
@@ -245,6 +246,8 @@ def yesterday_weather_data(index):
                 gangsu.fny = ny
                 gangsu.save()
             if category == 'WSD':
+                if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
                 wwind = Wind()
                 wwind.fcstDate = fcstDate
                 wwind.fcstTime = fcstTime
