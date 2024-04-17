@@ -17,7 +17,7 @@ def index(request) :
 
 def some_url(request) :
     return HttpResponse('some url구현')
-  
+
 #결과 페이지 연결
 @csrf_exempt
 def result(request):
