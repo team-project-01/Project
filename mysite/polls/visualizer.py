@@ -14,8 +14,8 @@ import time
 ### 1일전, 2일전, 7일전을 선택해서 비교가능하게 구현한다고 생각하고 만들어봤습니다.
 ### (의도와 맞지 않을 시 수정하거나 수하님 그래프 사용)
 ##############
-
-def temperature():
+#### 데이터필드에 맞춰 함수명 변경했습니다.
+def Forecast_chart():
     temps = np.random.randint(14,20, size=24)
     yesterday_temps = np.random.randint(17, 23, size=24)
     now = time
@@ -32,9 +32,9 @@ def temperature():
 
     graph_path = ''
     plt.savefig('static/graphs/temp_graph.png', format='png')
-# temperature()
+# Forecast_chart()
 
-def rainfall():
+def Rainpercents_chart():
     rainf = np.random.randint(0,4, size=24)
     yesterday_rainf = np.random.randint(0, 2, size=24)
     now = time
@@ -49,8 +49,8 @@ def rainfall():
     plt.xlabel("Time (h)")
 
     plt.savefig('static/graphs/rain_graph.png', format='png')
-# rainfall()
-def windspeed():
+# Rainpercents_chart()
+def Winds_chart():
     winds = np.random.randint(1, 7, size=24)
     yesterday_winds = np.random.randint(1, 5, size=24)
     now = time
@@ -65,6 +65,6 @@ def windspeed():
     plt.xlabel("Time (h)")
 
     plt.savefig('static/graphs/wind_graph.png', format='png')
-# windspeed()
+# Winds_chart()
 
 # %%
