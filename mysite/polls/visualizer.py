@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from django.utils import timezone
 import time
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 ############## 
 ### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
@@ -14,6 +16,15 @@ import time
 ### 1일전, 2일전, 7일전을 선택해서 비교가능하게 구현한다고 생각하고 만들어봤습니다.
 ### (의도와 맞지 않을 시 수정하거나 수하님 그래프 사용)
 ##############
+
+def date_to_str( x ):
+	# x: delta value
+	# 오늘: x=0 / 1일전: x=1 / 2일전: x=2 / 7일전: x=7
+	now = datetime.now()
+	date = now.date()-relativedelta(days=x)
+	date_str = ''.join(str(date).split('-'))
+	time_str = str(now.hour)
+	return date_str, time_str
 
 def temperature():
     temps = np.random.randint(14,20, size=24)
