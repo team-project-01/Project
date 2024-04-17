@@ -1,3 +1,4 @@
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 import urllib.request
 from xml.dom.minidom import parseString
@@ -14,6 +15,9 @@ def index(request) :
     print("HTML에서 넘어온 area: ", area)
     return render(request, 'index.html', area)
 
+def some_url(request) :
+    return HttpResponse('some url구현')
+  
 #결과 페이지 연결
 @csrf_exempt
 def result(request):
@@ -74,3 +78,7 @@ def VilageFcstInfoService(a):
         return HttpResponse(result)  # 문자열을 HttpResponse에 전달
     else: # 실패시 -> 에러코드 출력
         return HttpResponse("Error Code:" + str(rescode))
+def graph(request):
+    context = {'place': '서울'}
+    # 템플릿에 context를 전달
+    return render(request, 'polls/graph.html', context)

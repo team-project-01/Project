@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import numpy as np
 #from django.utils import timezone
@@ -29,8 +30,9 @@ def temperature():
     plt.ylabel("Temperatures (°C)")
     plt.xlabel("Time (h)")
 
-    plt.savefig('graphs\temp_graph.png', format='png')
-
+    graph_path = ''
+    plt.savefig('static/graphs/temp_graph.png', format='png')
+# temperature()
 
 def rainfall():
     rainf = np.random.randint(0,4, size=24)
@@ -46,8 +48,8 @@ def rainfall():
     plt.ylabel("Rainfalls (mm)")
     plt.xlabel("Time (h)")
 
-    plt.savefig('graphs\rain_graph.png', format='png')
-
+    plt.savefig('static/graphs/rain_graph.png', format='png')
+# rainfall()
 def windspeed():
     winds = np.random.randint(1, 7, size=24)
     yesterday_winds = np.random.randint(1, 5, size=24)
@@ -62,5 +64,7 @@ def windspeed():
     plt.ylabel("Wind Speeds (m/s)")
     plt.xlabel("Time (h)")
 
-    plt.savefig('graphs\wind_graph.png', format='png')
+    plt.savefig('static/graphs/wind_graph.png', format='png')
+# windspeed()
 
+# %%
