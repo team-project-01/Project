@@ -1,3 +1,4 @@
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 import urllib.request
 from xml.dom.minidom import parseString
@@ -10,7 +11,6 @@ def index(request) :
     month_text = request.GET.get('sido')
     #board_list = Board.objects.filter(month=month_text)
     return render(request, 'index.html')
-
 
 
 def some_url(request) :
@@ -70,3 +70,7 @@ def VilageFcstInfoService(a):
         return HttpResponse(result)  # 문자열을 HttpResponse에 전달
     else: # 실패시 -> 에러코드 출력
         return HttpResponse("Error Code:" + str(rescode))
+def graph(request):
+    context = {'place': '서울'}
+    # 템플릿에 context를 전달
+    return render(request, 'polls/graph.html', context)
