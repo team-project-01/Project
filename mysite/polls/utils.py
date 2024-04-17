@@ -99,7 +99,7 @@ def today_weather_data(index):
     nx, ny = index_number[index]
     encodingKey = 'QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D'
 
-    now = datetime.now() + timedelta(hours=9)
+    now = datetime.now()
     base_date = datetime.today().strftime("%Y%m%d")
     update_time = [2,5,8,11,14,17,20,23]
     #단기예보
