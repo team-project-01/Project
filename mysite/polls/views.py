@@ -4,17 +4,21 @@ from xml.dom.minidom import parseString
 import xml.dom.minidom
 from .models import forecastData , Rainpercent , Wind
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
+# 기본 페이지 연결
 def index(request) :
-    month_text = request.GET.get('sido')
-    #board_list = Board.objects.filter(month=month_text)
-    return render(request, 'index.html')
+    area = request.GET.get('area')
+    context = {'area': area,}
+    print("HTML에서 넘어온 area: ", area)
+    return render(request, 'index.html', area)
 
-
-
-def some_url(request) :
-    return HttpResponse('some url구현')
+#결과 페이지 연결
+@csrf_exempt
+def result(request):
+    area2 = request.POST['area2']
+    return render(request, 'result.html', {'area2': area2})
 
 
 def VilageFcstInfoService(a):
