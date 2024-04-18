@@ -35,7 +35,7 @@ def result(request):
 
     # 차트 생성
     charts(area2)
-    time.sleep(2) #이미지 저장시간
+    time.sleep(0.6) #이미지 저장시간
 
     return render(request, 'result.html', context)
 
@@ -52,7 +52,7 @@ def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지
 
 def graph(request):
     charts()
-    time.sleep(2)
+    time.sleep(0.5)
     
     context = {'place': '서울'}
 

@@ -8,51 +8,24 @@ from dateutil.relativedelta import relativedelta
 from .models import *
 import os
 from datetime import timedelta
-
+import numpy as np
 
 #temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
 #        (forecastData, Rainpercent, Wind)
-
-
-
-
-# 	now = datetime.now()
-# 	date = now.date()-relativedelta(days=x)
-
 
 # 절대경로
 abspath = os.path.dirname(os.path.abspath(__file__)) 
 abspath = abspath.replace('\\','/')
 abspath = abspath+'/static/graphs/'
 
-
-#데이터 리스트
-#forecastData(기온) 리스트
-#{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
-
 #한글 고딕체
 #plt.rcParams['font.family'] ='Malgun Gothic'
 #plt.rcParams['axes.unicode_minus'] =False
 
-#index_num 추가예정
 def charts(area2):
+    num = area2
     fig, axs = plt.subplots(1, 3, figsize=(20, 5))
-    # plt.subplots_adjust(wspace = 0.15, hspace = 0.15)
-    # data = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
-    # date, time = date_to_str(0)
-    # date_1day_ago, _ = date_to_str(1)
-    # date_2day_ago, _ = date_to_str(2)
-    # date_7day_ago, _ = date_to_str(7)
-    
-    # t = int(time)
-    # time_range = list(range(t-2, t+6))
-    # time_range = [x if x<24 else x-24 for x in time_range] # 24 이상이면 0부터
-    # time_range = [x if x>=0 else x+24 for x in time_range] # 0 미만이면 23부터
-    # time_range = [str(x) if len(str(x))==2 else '0'+str(x) for x in time_range] # 문자열화
-    
-
-    #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
 
     t =datetime.date.today()
     today = t.strftime("%Y%m%d")
@@ -60,15 +33,7 @@ def charts(area2):
     day_2_ago = (t - timedelta(days=2)).strftime("%Y%m%d")
     day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
 
-    #시간 수정예정
-    time_range = [i for i in range(0,24)]
-    # 기온
-    
-
-    #index_num 받아와서 수정할 예정
-    num = area2
-
-
+    #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
     temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
     temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
     temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
@@ -97,13 +62,15 @@ def charts(area2):
     axs[0].set_ylabel("Temperatures (°C)")
     axs[0].set_xlabel("Time (h)")
     axs[0].set_ylim(min(all_temps)-4, max(all_temps)+4)
-
-    # #풍속
+    axs[0].set_xlim(0, 23)
+    plt.setp(axs[0], xticks=[3,6,9,12,15,18,21])
+    
+    
+    #풍속
     wind_today = [float(i[3]) for i in Wind.objects.filter(fcstDate=today, index_num=num).values_list()]
     wind_1day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
     wind_2day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
     wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
-
 
     axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
     axs[1].plot([i for i in range(len(wind_today))], wind_today, color='green', marker='o', linestyle='solid', label='today')
@@ -122,12 +89,13 @@ def charts(area2):
     axs[1].vlines(all_wind2[0][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
     axs[1].vlines(all_wind2[-1][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
 
-
-
     axs[1].legend(loc='upper left', ncols=1)
     axs[1].set_ylabel("Wind Speeds (m/s)")
     axs[1].set_xlabel("Time (h)")
     axs[1].set_ylim(min(all_wind)-4, max(all_wind)+4)
+    axs[1].set_xlim(0, 23)
+    plt.setp(axs[1], xticks=[3,6,9,12,15,18,21])
+
 
     # #강수량
     rain_today = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
@@ -156,6 +124,8 @@ def charts(area2):
     axs[2].set_ylabel("Precipitation (mm)")
     axs[2].set_xlabel("Time (h)")
     axs[2].set_ylim(min(all_rain)-4, max(all_rain)+4)
+    axs[2].set_xlim(0, 23)
+    plt.setp(axs[2], xticks=[3,6,9,12,15,18,21])
 
     fig.tight_layout()
     plt.savefig(abspath+'all_graph.png', format='png')
