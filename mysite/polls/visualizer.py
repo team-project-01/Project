@@ -23,59 +23,85 @@ def date_to_str( x ):
 	now = datetime.now()
 	date = now.date()-relativedelta(days=x)
 	date_str = ''.join(str(date).split('-'))
-	time_str = str(now.hour)
+	time_str = str(now.hour) if len(str(now.hour))==2 else '0'+str(now.hour)
 	return date_str, time_str
 
-def temperature():
-    temps = np.random.randint(14,20, size=24)
-    yesterday_temps = np.random.randint(17, 23, size=24)
-    now = time
 
-    plt.plot(range(0, 24), temps, color='red', marker='o', linestyle='solid', label='today')
-    plt.plot(range(0, 24), yesterday_temps, color='red', linestyle=":", label='yesterday')
-    plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
+#plt.rcParams['font.family'] ='Malgun Gothic'
+#plt.rcParams['axes.unicode_minus'] =False
 
-    plt.legend(loc='lower left', ncols=1)
-    min(temps)<min(yesterday_temps)
-    plt.ylim(min(temps)-2 , max(temps)+2)
-    plt.ylabel("Temperatures (°C)")
-    plt.xlabel("Time (h)")
+def charts():
+    fig, axs = plt.subplots(1, 3, figsize=(20, 5))
+    # plt.subplots_adjust(wspace = 0.15, hspace = 0.15)
 
-    graph_path = ''
-    plt.savefig('static/graphs/temp_graph.png', format='png')
-# temperature()
+    date, time = date_to_str(0)
+    date_1day_ago, _ = date_to_str(1)
+    date_2day_ago, _ = date_to_str(2)
+    date_7day_ago, _ = date_to_str(7)
+    
+    t = int(time)
+    time_range = list(range(t-2, t+6))
+    time_range = [x if x<24 else x-24 for x in time_range] # 24 이상이면 0부터
+    time_range = [x if x>=0 else x+24 for x in time_range] # 0 미만이면 23부터
+    time_range = [str(x) if len(str(x))==2 else '0'+str(x) for x in time_range] # 문자열화
 
-def rainfall():
-    rainf = np.random.randint(0,4, size=24)
-    yesterday_rainf = np.random.randint(0, 2, size=24)
-    now = time
+    # 기온
+    temps = list(np.random.randint(14, 20, size=8))
+    temps_1day_ago = list(np.random.randint(17, 23, size=8))
+    temps_2day_ago = list(np.random.randint(17, 23, size=8))
+    temps_7day_ago = list(np.random.randint(17, 23, size=8))
 
-    plt.plot(range(0, 24), rainf, color='blue', marker='o', linestyle='solid', label='today')
-    plt.plot(range(0, 24), yesterday_rainf, color='blue', linestyle=":", label='yesterday')
-    plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
+    axs[0].set_title('Temperatures', fontsize = 12, fontweight ="bold")
+    axs[0].plot(time_range, temps, color='red', marker='o', linestyle='solid', label='today')
+    axs[0].plot(time_range, temps_1day_ago, color='black', linestyle=":", label='1 day ago')
+    axs[0].plot(time_range, temps_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    axs[0].plot(time_range, temps_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    axs[0].vlines(time, 0, 40, color='gray', linestyle='solid')
 
-    plt.legend(loc='upper left', ncols=1)
-    plt.ylim(0, max(rainf) if max(rainf)>8 else 8)
-    plt.ylabel("Rainfalls (mm)")
-    plt.xlabel("Time (h)")
+    axs[0].legend(loc='upper left', ncols=1)
+    axs[0].set_ylabel("Temperatures (°C)")
+    axs[0].set_xlabel("Time (h)")
+    all_temps = temps+temps_1day_ago+temps_2day_ago+temps_7day_ago
+    axs[0].set_ylim(min(all_temps)-4, max(all_temps)+4)
 
-    plt.savefig('static/graphs/rain_graph.png', format='png')
-# rainfall()
-def windspeed():
-    winds = np.random.randint(1, 7, size=24)
-    yesterday_winds = np.random.randint(1, 5, size=24)
-    now = time
+    #풍속
+    winds = list(np.random.randint(14, 20, size=8))
+    winds_1day_ago = list(np.random.randint(17, 23, size=8))
+    winds_2day_ago = list(np.random.randint(17, 23, size=8))
+    winds_7day_ago = list(np.random.randint(17, 23, size=8))
 
-    plt.plot(range(0, 24), winds, color='green', marker='o', linestyle='solid', label='today')
-    plt.plot(range(0, 24), yesterday_winds, color='green', linestyle=":", label='yesterday')
-    plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
+    axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
+    axs[1].plot(time_range, winds, color='green', marker='o', linestyle='solid', label='today')
+    axs[1].plot(time_range, winds_1day_ago, color='black', linestyle=":", label='1 day ago')
+    axs[1].plot(time_range, winds_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    axs[1].plot(time_range, winds_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    axs[1].vlines(time, 0, 40, color='gray', linestyle='solid')
 
-    plt.legend(loc='upper left', ncols=1)
-    plt.ylim(0, max(winds) if max(winds)>15 else 15)
-    plt.ylabel("Wind Speeds (m/s)")
-    plt.xlabel("Time (h)")
+    axs[1].legend(loc='upper left', ncols=1)
+    axs[1].set_ylabel("Wind Speeds (m/s)")
+    axs[1].set_xlabel("Time (h)")
+    all_winds = winds+winds_1day_ago+winds_2day_ago+winds_7day_ago
+    axs[1].set_ylim(min(all_winds)-4, max(all_winds)+4)
 
-    plt.savefig('static/graphs/wind_graph.png', format='png')
-# windspeed()
+    #강수량
+    rainf = list(np.random.randint(14, 20, size=8))
+    rainf_1day_ago = list(np.random.randint(17, 23, size=8))
+    rainf_2day_ago = list(np.random.randint(17, 23, size=8))
+    rainf_7day_ago = list(np.random.randint(17, 23, size=8))
 
-# %%
+    axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
+    axs[2].plot(time_range, rainf, color='blue', marker='o', linestyle='solid', label='today')
+    axs[2].plot(time_range, rainf_1day_ago, color='black', linestyle=":", label='1 day ago')
+    axs[2].plot(time_range, rainf_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    axs[2].plot(time_range, rainf_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    axs[2].vlines(time, 0, 40, color='gray', linestyle='solid')
+
+    axs[2].legend(loc='upper left', ncols=1)
+    axs[2].set_ylabel("Precipitation (mm)")
+    axs[2].set_xlabel("Time (h)")
+    all_rainf = rainf+rainf_1day_ago+rainf_2day_ago+rainf_7day_ago
+    axs[2].set_ylim(min(all_rainf)-4, max(all_rainf)+4)
+
+    fig.tight_layout()
+    plt.show()
+#    plt.savefig('static/graphs/graph.png', format='png')
