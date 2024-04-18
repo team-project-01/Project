@@ -1,10 +1,12 @@
-
+#%%
 import matplotlib.pyplot as plt
 import numpy as np
 #from django.utils import timezone
 import time
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from polls.models import *
+
 
 ############## 
 ### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
@@ -17,6 +19,16 @@ from dateutil.relativedelta import relativedelta
 ### (의도와 맞지 않을 시 수정하거나 수하님 그래프 사용)
 ##############
 
+#### 데이터필드에 맞춰 함수명 변경했습니다.
+#데이터 리스트
+#forecastData(기온) 리스트
+#{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny'} 순서
+
+# temps=[i[3] for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+#                    단위값 수정할 곳                조건 수정할 곳
+#        (forecastData, Rainpercent, Wind)
+
+
 def date_to_str( x ):
 	# x: delta value
 	# 오늘: x=0 / 1일전: x=1 / 2일전: x=2 / 7일전: x=7
@@ -26,26 +38,28 @@ def date_to_str( x ):
 	time_str = str(now.hour)
 	return date_str, time_str
 
-def temperature():
+
+def Forecast_chart():
     temps = np.random.randint(14,20, size=24)
     yesterday_temps = np.random.randint(17, 23, size=24)
     now = time
 
-    plt.plot(range(0, 24), temps, color='red', marker='o', linestyle='solid', label='today')
-    plt.plot(range(0, 24), yesterday_temps, color='red', linestyle=":", label='yesterday')
+    plt.plot(range(len(temps)), temps, color='red', marker='o', linestyle='solid', label='today')
+    plt.plot(range(len(yesterday_temps)), yesterday_temps, color='red', linestyle=":", label='yesterday')
     plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
 
     plt.legend(loc='lower left', ncols=1)
     min(temps)<min(yesterday_temps)
-    plt.ylim(min(temps)-2 , max(temps)+2)
+    plt.ylim(min(min(temps),min(yesterday_temps))-2 , max(max(temps),max(yesterday_temps))+2)
     plt.ylabel("Temperatures (°C)")
     plt.xlabel("Time (h)")
 
     graph_path = ''
     plt.savefig('static/graphs/temp_graph.png', format='png')
-# temperature()
+    plt.show()
+# Forecast_chart()
 
-def rainfall():
+def Rainpercents_chart():
     rainf = np.random.randint(0,4, size=24)
     yesterday_rainf = np.random.randint(0, 2, size=24)
     now = time
@@ -60,8 +74,10 @@ def rainfall():
     plt.xlabel("Time (h)")
 
     plt.savefig('static/graphs/rain_graph.png', format='png')
-# rainfall()
-def windspeed():
+    plt.show()
+# Rainpercents_chart()
+
+def Winds_chart():
     winds = np.random.randint(1, 7, size=24)
     yesterday_winds = np.random.randint(1, 5, size=24)
     now = time
@@ -76,6 +92,8 @@ def windspeed():
     plt.xlabel("Time (h)")
 
     plt.savefig('static/graphs/wind_graph.png', format='png')
-# windspeed()
+    plt.show()
+
+# Winds_chart()
 
 # %%
