@@ -1,11 +1,10 @@
-from .visualizer import Forecast_chart
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .utils import today_weather_data, yesterday_weather_data,get_weather_image, index_num_dic
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import time
-from .visualizer import *
+from .visualizer import charts
 
 # Create your views here.
 
@@ -24,6 +23,7 @@ def result(request):
     area2 = int(request.POST['area2'])
     a = yesterday_weather_data(area2)
     b = today_weather_data(area2)
+    
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
     
     if area2 in index_num_dic:
@@ -32,6 +32,11 @@ def result(request):
     # return render(request, 'polls/result.html', context)
 
         context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a ,}
+
+    # 차트 생성
+    charts(area2)
+    time.sleep(2) #이미지 저장시간
+
     return render(request, 'result.html', context)
 
 

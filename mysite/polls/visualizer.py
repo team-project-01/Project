@@ -9,19 +9,6 @@ from .models import *
 import os
 from datetime import timedelta
 
-############## 
-### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
-#
-### random data => 크롤한 데이터로 바꿔야합니다.
-### 비교 데이터를 yesterday라고만 표시해뒀습니다.
-#
-### 수하님 저 둘다 그래프 만들어보고 나은걸로 선택하기로 했습니다.
-### 1일전, 2일전, 7일전을 선택해서 비교가능하게 구현한다고 생각하고 만들어봤습니다.
-### (의도와 맞지 않을 시 수정하거나 수하님 그래프 사용)
-##############
-
-#### 데이터필드에 맞춰 함수명 변경했습니다.
-
 
 #temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
@@ -44,31 +31,12 @@ abspath = abspath+'/static/graphs/'
 #forecastData(기온) 리스트
 #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
 
-def Forecast_chart():
-    temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
-
-    # temps = np.random.randint(14,20, size=24)
-    # yesterday_temps = np.random.randint(17, 23, size=24)
-    now = time
-
-    plt.plot(range(len(temps)), temps, color='red', marker='o', linestyle='solid', label='today')
-    # plt.plot(range(len(yesterday_temps)), yesterday_temps, color='red', linestyle=":", label='yesterday')
-    plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
-
-    plt.legend(loc='lower left', ncols=1)
-
-    # plt.ylim(min(min(temps),min(yesterday_temps))-2 , max(max(temps),max(yesterday_temps))+2)
-    plt.ylabel("Temperatures (°C)")
-    plt.xlabel("Time (h)")
-
-    #절대경로 +'파일이름'
-    plt.savefig(abspath+'temp_graph.png', format='png')
-
+#한글 고딕체
 #plt.rcParams['font.family'] ='Malgun Gothic'
 #plt.rcParams['axes.unicode_minus'] =False
 
 #index_num 추가예정
-def charts():
+def charts(area2):
     fig, axs = plt.subplots(1, 3, figsize=(20, 5))
     # plt.subplots_adjust(wspace = 0.15, hspace = 0.15)
     # data = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
@@ -91,7 +59,6 @@ def charts():
     day_1_ago = (t - timedelta(days=1)).strftime("%Y%m%d")
     day_2_ago = (t - timedelta(days=2)).strftime("%Y%m%d")
     day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
-    day = [today, day_1_ago, day_2_ago, day_7_ago]
 
     #시간 수정예정
     time_range = [i for i in range(0,24)]
@@ -99,7 +66,9 @@ def charts():
     
 
     #index_num 받아와서 수정할 예정
-    num = '156'
+    num = area2
+
+
     temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
     temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
     temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
@@ -113,10 +82,14 @@ def charts():
 
     #시간, 값
     all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
-    all_temps2 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps1 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=today, index_num=num).values_list()]
+    temps2 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps3 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    temps4 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    all_temps2 = temps1+temps2+temps3+temps4
     all_temps2.sort(key=lambda x:x[1])
 
-    #수직선 제일 작은 값, 큰 값
+    #수직선 모든 값들(7일전~오늘)중 제일 작은 값, 큰 값
     axs[0].vlines(all_temps2[0][0], min(all_temps)-4, max(all_temps)+4, color='gray', linestyle='solid')
     axs[0].vlines(all_temps2[-1][0], min(all_temps)-4, max(all_temps)+4, color='gray', linestyle='solid')
 
@@ -139,7 +112,11 @@ def charts():
     axs[1].plot([i for i in range(len(wind_7day_ago))], wind_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
     
     all_wind = wind_today+wind_1day_ago+wind_2day_ago+wind_7day_ago
-    all_wind2 = [[float(i[2]),float(i[3])] for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    wind1 = [[float(i[2]),float(i[3])] for i in Wind.objects.filter(fcstDate=today, index_num=num).values_list()]
+    wind2 = [[float(i[2]),float(i[3])] for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    wind3 = [[float(i[2]),float(i[3])] for i in Wind.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    wind4 = [[float(i[2]),float(i[3])] for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    all_wind2 = wind1+wind2+wind3+wind4
     all_wind2.sort(key=lambda x:x[1])
 
     axs[1].vlines(all_wind2[0][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
@@ -165,7 +142,11 @@ def charts():
     axs[2].plot([i for i in range(len(rain_7day_ago))], rain_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
     
     all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
-    all_rain2 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain1 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
+    rain2 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain3 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    rain4 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    all_rain2 = rain1+rain2+rain3+rain4
     all_rain2.sort(key=lambda x:x[1])
 
     axs[2].vlines(all_rain2[0][0], min(all_rain)-4, max(all_rain)+4, color='gray', linestyle='solid')
