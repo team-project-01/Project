@@ -224,7 +224,36 @@
     </div>
     <div class="col-md-4" style="text-align : center;">
         <button type="submit">확인</button>
-        <a href="{{ im2 }}"><img src="{{ im }}"></a>
+        <!-- <a href="{{ im2 }}"><img src="{{ im }}"></a> -->
+
+        <button onclick="showImage('precipitation')">강수량</button>
+        <button onclick="showImage('wind')">바람</button>
+        <button onclick="showImage('temperature')">온도</button>
+    
+        <a id="imageLink">
+            <img id="weatherImage" src="" alt="Weather Image">
+        </a>
+    
+        <script>
+            const images = {
+                precipitation: { src: "{{ im }}", href: "{{ im2 }}" },
+                temperature: { src: "{{ im3 }}", href: "{{ im4 }}" },
+                wind: { src: "{{ im5 }}", href: "{{ im6 }}" }
+            };
+    
+            function showImage(weatherType) {
+                const image = document.getElementById('weatherImage');
+                const link = document.getElementById('imageLink');
+    
+                image.src = images[weatherType].src;
+                image.alt = weatherType + " Image";
+                link.href = images[weatherType].href;
+            }
+            window.onload = function() {
+            showImage('precipitation');
+        }
+        </script>
+    
     </div>
     
 </form>

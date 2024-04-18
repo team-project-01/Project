@@ -10,7 +10,9 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request) :
     area = request.GET.get('area')
     c,d = get_weather_image('강수량')
-    context = {'area': area, 'im' : c, 'im2' : d, }
+    e,f = get_weather_image('기온')
+    g,h = get_weather_image('바람')
+    context = {'area': area, 'im' : c, 'im2' : d, 'im3' : e, 'im4' : f, 'im5' : g, 'im6' : h}
     return render(request, 'index.html', context)
 
 #결과 페이지 연결
