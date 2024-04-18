@@ -5,6 +5,7 @@ from .utils import today_weather_data, yesterday_weather_data,get_weather_image,
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import time
+from .visualizer import *
 
 # Create your views here.
 
@@ -45,7 +46,7 @@ def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지
 
 
 def graph(request):
-    Forecast_chart()
+    charts()
     time.sleep(2)
     
     context = {'place': '서울'}

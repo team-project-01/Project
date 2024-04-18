@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from django.utils import timezone
 import time
-from datetime import datetime
+import datetime
 from dateutil.relativedelta import relativedelta
 from .models import *
 import os
+from datetime import timedelta
 
 ############## 
 ### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
@@ -66,78 +67,88 @@ def Forecast_chart():
 #plt.rcParams['font.family'] ='Malgun Gothic'
 #plt.rcParams['axes.unicode_minus'] =False
 
+#index_num 추가예정
 def charts():
     fig, axs = plt.subplots(1, 3, figsize=(20, 5))
     # plt.subplots_adjust(wspace = 0.15, hspace = 0.15)
-
-    date, time = date_to_str(0)
-    date_1day_ago, _ = date_to_str(1)
-    date_2day_ago, _ = date_to_str(2)
-    date_7day_ago, _ = date_to_str(7)
+    # data = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+    # date, time = date_to_str(0)
+    # date_1day_ago, _ = date_to_str(1)
+    # date_2day_ago, _ = date_to_str(2)
+    # date_7day_ago, _ = date_to_str(7)
     
-    t = int(time)
-    time_range = list(range(t-2, t+6))
-    time_range = [x if x<24 else x-24 for x in time_range] # 24 이상이면 0부터
-    time_range = [x if x>=0 else x+24 for x in time_range] # 0 미만이면 23부터
-    time_range = [str(x) if len(str(x))==2 else '0'+str(x) for x in time_range] # 문자열화
-
+    # t = int(time)
+    # time_range = list(range(t-2, t+6))
+    # time_range = [x if x<24 else x-24 for x in time_range] # 24 이상이면 0부터
+    # time_range = [x if x>=0 else x+24 for x in time_range] # 0 미만이면 23부터
+    # time_range = [str(x) if len(str(x))==2 else '0'+str(x) for x in time_range] # 문자열화
+    
+    #시간 수정예정
+    time_range = [i for i in range(0,24)]
     # 기온
-    temps = list(np.random.randint(14, 20, size=8))
-    temps_1day_ago = list(np.random.randint(17, 23, size=8))
-    temps_2day_ago = list(np.random.randint(17, 23, size=8))
-    temps_7day_ago = list(np.random.randint(17, 23, size=8))
+    t =datetime.date.today()
+    today = t.strftime("%Y%m%d")
+    day_1_ago = (t - timedelta(days=1)).strftime("%Y%m%d")
+    day_2_ago = (t - timedelta(days=2)).strftime("%Y%m%d")
+    day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
+
+    #index_num 받아와서 수정할 예정
+    temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num='156').values_list()]
+    temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num='156').values_list()]
+    temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num='156').values_list()]
+    temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num='156').values_list()]
 
     axs[0].set_title('Temperatures', fontsize = 12, fontweight ="bold")
-    axs[0].plot(time_range, temps, color='red', marker='o', linestyle='solid', label='today')
-    axs[0].plot(time_range, temps_1day_ago, color='black', linestyle=":", label='1 day ago')
-    axs[0].plot(time_range, temps_2day_ago, color='gray', linestyle=":", label='2 day ago')
-    axs[0].plot(time_range, temps_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
-    axs[0].vlines(time, 0, 40, color='gray', linestyle='solid')
+    axs[0].plot([i for i in range(len(temps_today))], temps_today, color='red', marker='o', linestyle='solid', label='today')
+    axs[0].plot([i for i in range(len(temps_1day_ago))], temps_1day_ago, color='black', linestyle=":", label='1 day ago')
+    axs[0].plot([i for i in range(len(temps_2day_ago))], temps_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    axs[0].plot([i for i in range(len(temps_7day_ago))], temps_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    # axs[0].vlines(time, 0, 40, color='gray', linestyle='solid')
 
     axs[0].legend(loc='upper left', ncols=1)
     axs[0].set_ylabel("Temperatures (°C)")
     axs[0].set_xlabel("Time (h)")
-    all_temps = temps+temps_1day_ago+temps_2day_ago+temps_7day_ago
+    all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
     axs[0].set_ylim(min(all_temps)-4, max(all_temps)+4)
 
-    #풍속
-    winds = list(np.random.randint(14, 20, size=8))
-    winds_1day_ago = list(np.random.randint(17, 23, size=8))
-    winds_2day_ago = list(np.random.randint(17, 23, size=8))
-    winds_7day_ago = list(np.random.randint(17, 23, size=8))
+    # #풍속
+    # winds = list(np.random.randint(14, 20, size=8))
+    # winds_1day_ago = list(np.random.randint(17, 23, size=8))
+    # winds_2day_ago = list(np.random.randint(17, 23, size=8))
+    # winds_7day_ago = list(np.random.randint(17, 23, size=8))
 
-    axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
-    axs[1].plot(time_range, winds, color='green', marker='o', linestyle='solid', label='today')
-    axs[1].plot(time_range, winds_1day_ago, color='black', linestyle=":", label='1 day ago')
-    axs[1].plot(time_range, winds_2day_ago, color='gray', linestyle=":", label='2 day ago')
-    axs[1].plot(time_range, winds_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
-    axs[1].vlines(time, 0, 40, color='gray', linestyle='solid')
+    # axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
+    # axs[1].plot(time_range, winds, color='green', marker='o', linestyle='solid', label='today')
+    # axs[1].plot(time_range, winds_1day_ago, color='black', linestyle=":", label='1 day ago')
+    # axs[1].plot(time_range, winds_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    # axs[1].plot(time_range, winds_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    # axs[1].vlines(time, 0, 40, color='gray', linestyle='solid')
 
-    axs[1].legend(loc='upper left', ncols=1)
-    axs[1].set_ylabel("Wind Speeds (m/s)")
-    axs[1].set_xlabel("Time (h)")
-    all_winds = winds+winds_1day_ago+winds_2day_ago+winds_7day_ago
-    axs[1].set_ylim(min(all_winds)-4, max(all_winds)+4)
+    # axs[1].legend(loc='upper left', ncols=1)
+    # axs[1].set_ylabel("Wind Speeds (m/s)")
+    # axs[1].set_xlabel("Time (h)")
+    # all_winds = winds+winds_1day_ago+winds_2day_ago+winds_7day_ago
+    # axs[1].set_ylim(min(all_winds)-4, max(all_winds)+4)
 
-    #강수량
-    rainf = list(np.random.randint(14, 20, size=8))
-    rainf_1day_ago = list(np.random.randint(17, 23, size=8))
-    rainf_2day_ago = list(np.random.randint(17, 23, size=8))
-    rainf_7day_ago = list(np.random.randint(17, 23, size=8))
+    # #강수량
+    # rainf = list(np.random.randint(14, 20, size=8))
+    # rainf_1day_ago = list(np.random.randint(17, 23, size=8))
+    # rainf_2day_ago = list(np.random.randint(17, 23, size=8))
+    # rainf_7day_ago = list(np.random.randint(17, 23, size=8))
 
-    axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
-    axs[2].plot(time_range, rainf, color='blue', marker='o', linestyle='solid', label='today')
-    axs[2].plot(time_range, rainf_1day_ago, color='black', linestyle=":", label='1 day ago')
-    axs[2].plot(time_range, rainf_2day_ago, color='gray', linestyle=":", label='2 day ago')
-    axs[2].plot(time_range, rainf_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
-    axs[2].vlines(time, 0, 40, color='gray', linestyle='solid')
+    # axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
+    # axs[2].plot(time_range, rainf, color='blue', marker='o', linestyle='solid', label='today')
+    # axs[2].plot(time_range, rainf_1day_ago, color='black', linestyle=":", label='1 day ago')
+    # axs[2].plot(time_range, rainf_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    # axs[2].plot(time_range, rainf_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    # axs[2].vlines(time, 0, 40, color='gray', linestyle='solid')
 
-    axs[2].legend(loc='upper left', ncols=1)
-    axs[2].set_ylabel("Precipitation (mm)")
-    axs[2].set_xlabel("Time (h)")
-    all_rainf = rainf+rainf_1day_ago+rainf_2day_ago+rainf_7day_ago
-    axs[2].set_ylim(min(all_rainf)-4, max(all_rainf)+4)
+    # axs[2].legend(loc='upper left', ncols=1)
+    # axs[2].set_ylabel("Precipitation (mm)")
+    # axs[2].set_xlabel("Time (h)")
+    # all_rainf = rainf+rainf_1day_ago+rainf_2day_ago+rainf_7day_ago
+    # axs[2].set_ylim(min(all_rainf)-4, max(all_rainf)+4)
 
-    fig.tight_layout()
-#    plt.savefig('static/graphs/graph.png', format='png')
-    plt.show()
+    # fig.tight_layout()
+    plt.savefig(abspath+'temp_graph.png', format='png')
+    # plt.show()
