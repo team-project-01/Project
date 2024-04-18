@@ -9,5 +9,4 @@ urlpatterns = [
     path('test/', views.graph, name='graph'),
     path('result', views.result, name='result'),
 
-
 ]

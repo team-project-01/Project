@@ -5,8 +5,8 @@ import numpy as np
 import time
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-# from .models import *
-
+from .models import *
+import os
 
 ############## 
 ### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
@@ -20,18 +20,13 @@ from dateutil.relativedelta import relativedelta
 ##############
 
 #### 데이터필드에 맞춰 함수명 변경했습니다.
-#데이터 리스트
-#forecastData(기온) 리스트
-#{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny'} 순서
+
 
 #temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
 #        (forecastData, Rainpercent, Wind)
 
 
-def q() :
-    a = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
-    return a
 
 
 def date_to_str( x ):
@@ -44,10 +39,21 @@ def date_to_str( x ):
 	return date_str, time_str
 
 
-def Forecast_chart():
-    # temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
 
-    temps = np.random.randint(14,20, size=24)
+# 절대경로
+abspath = os.path.dirname(os.path.abspath(__file__)) 
+abspath = abspath.replace('\\','/')
+abspath = abspath+'/static/graphs/'
+
+
+#데이터 리스트
+#forecastData(기온) 리스트
+#{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
+
+def Forecast_chart():
+    temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+
+    # temps = np.random.randint(14,20, size=24)
     # yesterday_temps = np.random.randint(17, 23, size=24)
     now = time
 
@@ -61,10 +67,9 @@ def Forecast_chart():
     plt.ylabel("Temperatures (°C)")
     plt.xlabel("Time (h)")
 
-    graph_path = ''
-    plt.savefig('static/graphs/temp_graph.png', format='png')
-    plt.show()
-Forecast_chart()
+    #절대경로 +'파일이름'
+    plt.savefig(abspath+'temp_graph.png', format='png')
+# Forecast_chart()
 
 def Rainpercents_chart():
     rainf = np.random.randint(0,4, size=24)
@@ -82,7 +87,7 @@ def Rainpercents_chart():
 
     plt.savefig('static/graphs/rain_graph.png', format='png')
     plt.show()
-Rainpercents_chart()
+# Rainpercents_chart()
 
 def Winds_chart():
     winds = np.random.randint(1, 7, size=24)
@@ -101,6 +106,6 @@ def Winds_chart():
     plt.savefig('static/graphs/wind_graph.png', format='png')
     plt.show()
 
-Winds_chart()
+# Winds_chart()
 
 # %%
