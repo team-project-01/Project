@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .utils import today_weather_data, yesterday_weather_data, index_num_dic
+from .utils import today_weather_data, yesterday_weather_data,get_weather_image, index_num_dic
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -9,9 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 # 기본 페이지 연결
 def index(request) :
     area = request.GET.get('area')
-    context = {'area': area,}
-    print("HTML에서 넘어온 area: ", area)
-    return render(request, 'index.html', area)
+    c,d = get_weather_image('강수량')
+    context = {'area': area, 'im' : c, 'im2' : d, }
+    return render(request, 'index.html', context)
 
 #결과 페이지 연결
 @csrf_exempt
@@ -20,8 +20,9 @@ def result(request):
     a = yesterday_weather_data(area2)
     b = today_weather_data(area2)
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
+    
     if area2 in index_num_dic:
-        context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a }
+        context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a ,}
     return render(request, 'result.html', context)
 
 #그냥 잘 돌아가는지 확인하는 용 http~~~8000/weather 치면 나오는 것
