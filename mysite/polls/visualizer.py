@@ -83,72 +83,99 @@ def charts():
     # time_range = [x if x>=0 else x+24 for x in time_range] # 0 미만이면 23부터
     # time_range = [str(x) if len(str(x))==2 else '0'+str(x) for x in time_range] # 문자열화
     
-    #시간 수정예정
-    time_range = [i for i in range(0,24)]
-    # 기온
+
+    #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
+
     t =datetime.date.today()
     today = t.strftime("%Y%m%d")
     day_1_ago = (t - timedelta(days=1)).strftime("%Y%m%d")
     day_2_ago = (t - timedelta(days=2)).strftime("%Y%m%d")
     day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
+    day = [today, day_1_ago, day_2_ago, day_7_ago]
+
+    #시간 수정예정
+    time_range = [i for i in range(0,24)]
+    # 기온
+    
 
     #index_num 받아와서 수정할 예정
-    temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num='156').values_list()]
-    temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num='156').values_list()]
-    temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num='156').values_list()]
-    temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num='156').values_list()]
+    num = '156'
+    temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
+    temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[0].set_title('Temperatures', fontsize = 12, fontweight ="bold")
     axs[0].plot([i for i in range(len(temps_today))], temps_today, color='red', marker='o', linestyle='solid', label='today')
     axs[0].plot([i for i in range(len(temps_1day_ago))], temps_1day_ago, color='black', linestyle=":", label='1 day ago')
     axs[0].plot([i for i in range(len(temps_2day_ago))], temps_2day_ago, color='gray', linestyle=":", label='2 day ago')
     axs[0].plot([i for i in range(len(temps_7day_ago))], temps_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
-    # axs[0].vlines(time, 0, 40, color='gray', linestyle='solid')
+
+    #시간, 값
+    all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
+    all_temps2 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    all_temps2.sort(key=lambda x:x[1])
+
+    #수직선 제일 작은 값, 큰 값
+    axs[0].vlines(all_temps2[0][0], min(all_temps)-4, max(all_temps)+4, color='gray', linestyle='solid')
+    axs[0].vlines(all_temps2[-1][0], min(all_temps)-4, max(all_temps)+4, color='gray', linestyle='solid')
 
     axs[0].legend(loc='upper left', ncols=1)
     axs[0].set_ylabel("Temperatures (°C)")
     axs[0].set_xlabel("Time (h)")
-    all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
     axs[0].set_ylim(min(all_temps)-4, max(all_temps)+4)
 
     # #풍속
-    # winds = list(np.random.randint(14, 20, size=8))
-    # winds_1day_ago = list(np.random.randint(17, 23, size=8))
-    # winds_2day_ago = list(np.random.randint(17, 23, size=8))
-    # winds_7day_ago = list(np.random.randint(17, 23, size=8))
+    wind_today = [float(i[3]) for i in Wind.objects.filter(fcstDate=today, index_num=num).values_list()]
+    wind_1day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    wind_2day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
-    # axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
-    # axs[1].plot(time_range, winds, color='green', marker='o', linestyle='solid', label='today')
-    # axs[1].plot(time_range, winds_1day_ago, color='black', linestyle=":", label='1 day ago')
-    # axs[1].plot(time_range, winds_2day_ago, color='gray', linestyle=":", label='2 day ago')
-    # axs[1].plot(time_range, winds_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
-    # axs[1].vlines(time, 0, 40, color='gray', linestyle='solid')
 
-    # axs[1].legend(loc='upper left', ncols=1)
-    # axs[1].set_ylabel("Wind Speeds (m/s)")
-    # axs[1].set_xlabel("Time (h)")
-    # all_winds = winds+winds_1day_ago+winds_2day_ago+winds_7day_ago
-    # axs[1].set_ylim(min(all_winds)-4, max(all_winds)+4)
+    axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
+    axs[1].plot([i for i in range(len(wind_today))], wind_today, color='green', marker='o', linestyle='solid', label='today')
+    axs[1].plot([i for i in range(len(wind_1day_ago))], wind_1day_ago, color='black', linestyle=":", label='1 day ago')
+    axs[1].plot([i for i in range(len(wind_2day_ago))], wind_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    axs[1].plot([i for i in range(len(wind_7day_ago))], wind_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    
+    all_wind = wind_today+wind_1day_ago+wind_2day_ago+wind_7day_ago
+    all_wind2 = [[float(i[2]),float(i[3])] for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    all_wind2.sort(key=lambda x:x[1])
+
+    axs[1].vlines(all_wind2[0][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
+    axs[1].vlines(all_wind2[-1][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
+
+
+
+    axs[1].legend(loc='upper left', ncols=1)
+    axs[1].set_ylabel("Wind Speeds (m/s)")
+    axs[1].set_xlabel("Time (h)")
+    axs[1].set_ylim(min(all_wind)-4, max(all_wind)+4)
 
     # #강수량
-    # rainf = list(np.random.randint(14, 20, size=8))
-    # rainf_1day_ago = list(np.random.randint(17, 23, size=8))
-    # rainf_2day_ago = list(np.random.randint(17, 23, size=8))
-    # rainf_7day_ago = list(np.random.randint(17, 23, size=8))
+    rain_today = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
+    rain_1day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain_2day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    rain_7day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
-    # axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
-    # axs[2].plot(time_range, rainf, color='blue', marker='o', linestyle='solid', label='today')
-    # axs[2].plot(time_range, rainf_1day_ago, color='black', linestyle=":", label='1 day ago')
-    # axs[2].plot(time_range, rainf_2day_ago, color='gray', linestyle=":", label='2 day ago')
-    # axs[2].plot(time_range, rainf_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
-    # axs[2].vlines(time, 0, 40, color='gray', linestyle='solid')
+    axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
+    axs[2].plot([i for i in range(len(rain_today))], rain_today, color='blue', marker='o', linestyle='solid', label='today')
+    axs[2].plot([i for i in range(len(rain_1day_ago))], rain_1day_ago, color='black', linestyle=":", label='1 day ago')
+    axs[2].plot([i for i in range(len(rain_2day_ago))], rain_2day_ago, color='gray', linestyle=":", label='2 day ago')
+    axs[2].plot([i for i in range(len(rain_7day_ago))], rain_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
+    
+    all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
+    all_rain2 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    all_rain2.sort(key=lambda x:x[1])
 
-    # axs[2].legend(loc='upper left', ncols=1)
-    # axs[2].set_ylabel("Precipitation (mm)")
-    # axs[2].set_xlabel("Time (h)")
-    # all_rainf = rainf+rainf_1day_ago+rainf_2day_ago+rainf_7day_ago
-    # axs[2].set_ylim(min(all_rainf)-4, max(all_rainf)+4)
+    axs[2].vlines(all_rain2[0][0], min(all_rain)-4, max(all_rain)+4, color='gray', linestyle='solid')
+    axs[2].vlines(all_rain2[-1][0], min(all_rain)-4, max(all_rain)+4, color='gray', linestyle='solid')
 
-    # fig.tight_layout()
+    axs[2].legend(loc='upper left', ncols=1)
+    axs[2].set_ylabel("Precipitation (mm)")
+    axs[2].set_xlabel("Time (h)")
+    axs[2].set_ylim(min(all_rain)-4, max(all_rain)+4)
+
+    fig.tight_layout()
     plt.savefig(abspath+'temp_graph.png', format='png')
     # plt.show()
