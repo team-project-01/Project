@@ -177,5 +177,5 @@ def charts():
     axs[2].set_ylim(min(all_rain)-4, max(all_rain)+4)
 
     fig.tight_layout()
-    plt.savefig(abspath+'temp_graph.png', format='png')
+    plt.savefig(abspath+'all_graph.png', format='png')
     # plt.show()
