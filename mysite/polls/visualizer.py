@@ -29,10 +29,9 @@ from dateutil.relativedelta import relativedelta
 #        (forecastData, Rainpercent, Wind)
 
 
-# def aa() :
-#     a = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
-#     a = a[0]
-#     return a
+def q() :
+    a = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+    return a
 
 
 def date_to_str( x ):
@@ -65,7 +64,7 @@ def Forecast_chart():
     graph_path = ''
     plt.savefig('static/graphs/temp_graph.png', format='png')
     plt.show()
-# Forecast_chart()
+Forecast_chart()
 
 def Rainpercents_chart():
     rainf = np.random.randint(0,4, size=24)
@@ -83,7 +82,7 @@ def Rainpercents_chart():
 
     plt.savefig('static/graphs/rain_graph.png', format='png')
     plt.show()
-# Rainpercents_chart()
+Rainpercents_chart()
 
 def Winds_chart():
     winds = np.random.randint(1, 7, size=24)
@@ -102,6 +101,6 @@ def Winds_chart():
     plt.savefig('static/graphs/wind_graph.png', format='png')
     plt.show()
 
-# Winds_chart()
+Winds_chart()
 
 # %%
