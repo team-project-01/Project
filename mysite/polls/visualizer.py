@@ -5,7 +5,7 @@ import numpy as np
 import time
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from polls.models import *
+from .models import *
 
 
 ############## 
