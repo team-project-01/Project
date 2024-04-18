@@ -1,8 +1,10 @@
+from .visualizer import Forecast_chart
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .utils import today_weather_data, yesterday_weather_data, index_num_dic
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+import time
 
 # Create your views here.
 
@@ -35,6 +37,10 @@ def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지
 
 
 def graph(request):
-    context = {'place': "서울" }
+    Forecast_chart()
+    time.sleep(2)
+    
+    context = {'place': '서울'}
+
     # 템플릿에 context를 전달
     return render(request, 'polls/graph.html', context)

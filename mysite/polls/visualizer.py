@@ -1,10 +1,12 @@
-
+#%%
 import matplotlib.pyplot as plt
 import numpy as np
 #from django.utils import timezone
 import time
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from .models import *
+import os
 
 ############## 
 ### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
@@ -17,15 +19,49 @@ from dateutil.relativedelta import relativedelta
 ### (의도와 맞지 않을 시 수정하거나 수하님 그래프 사용)
 ##############
 
-def date_to_str( x ):
-	# x: delta value
-	# 오늘: x=0 / 1일전: x=1 / 2일전: x=2 / 7일전: x=7
-	now = datetime.now()
-	date = now.date()-relativedelta(days=x)
-	date_str = ''.join(str(date).split('-'))
-	time_str = str(now.hour) if len(str(now.hour))==2 else '0'+str(now.hour)
-	return date_str, time_str
+#### 데이터필드에 맞춰 함수명 변경했습니다.
 
+
+#temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+#                    단위값 수정할 곳                조건 수정할 곳
+#        (forecastData, Rainpercent, Wind)
+
+
+
+
+# 	now = datetime.now()
+# 	date = now.date()-relativedelta(days=x)
+
+
+# 절대경로
+abspath = os.path.dirname(os.path.abspath(__file__)) 
+abspath = abspath.replace('\\','/')
+abspath = abspath+'/static/graphs/'
+
+
+#데이터 리스트
+#forecastData(기온) 리스트
+#{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
+
+def Forecast_chart():
+    temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+
+    # temps = np.random.randint(14,20, size=24)
+    # yesterday_temps = np.random.randint(17, 23, size=24)
+    now = time
+
+    plt.plot(range(len(temps)), temps, color='red', marker='o', linestyle='solid', label='today')
+    # plt.plot(range(len(yesterday_temps)), yesterday_temps, color='red', linestyle=":", label='yesterday')
+    plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
+
+    plt.legend(loc='lower left', ncols=1)
+
+    # plt.ylim(min(min(temps),min(yesterday_temps))-2 , max(max(temps),max(yesterday_temps))+2)
+    plt.ylabel("Temperatures (°C)")
+    plt.xlabel("Time (h)")
+
+    #절대경로 +'파일이름'
+    plt.savefig(abspath+'temp_graph.png', format='png')
 
 #plt.rcParams['font.family'] ='Malgun Gothic'
 #plt.rcParams['axes.unicode_minus'] =False
@@ -103,5 +139,5 @@ def charts():
     axs[2].set_ylim(min(all_rainf)-4, max(all_rainf)+4)
 
     fig.tight_layout()
-    plt.show()
 #    plt.savefig('static/graphs/graph.png', format='png')
+    plt.show()
