@@ -12,9 +12,6 @@ def index(request) :
     print("HTML에서 넘어온 area: ", area)
     return render(request, 'index.html', area)
 
-def some_url(request) :
-    return HttpResponse('some url구현')
-
 #결과 페이지 연결
 @csrf_exempt
 def result(request):
@@ -29,15 +26,16 @@ def result(request):
     }
     return render(request, 'result.html', context)
 
-
+@csrf_exempt
 def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지 않고 정렬됨
-    
-    a = yesterday_weather_data(108)
-    b = today_weather_data(108)
+    area2 = int(request.POST['area2'])
+    a = yesterday_weather_data(area2)
+    b = today_weather_data(area2)
 
     answer = a + '<br><br><br>' + b
     return HttpResponse(answer)
-    
+
+
 def graph(request):
     context = {'place': '서울'}
     # 템플릿에 context를 전달
