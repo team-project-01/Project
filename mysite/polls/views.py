@@ -1,10 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .utils import today_weather_data, yesterday_weather_data
-import urllib.request
-from xml.dom.minidom import parseString
-import xml.dom.minidom
-from .models import forecastData , Rainpercent , Wind
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -22,18 +18,27 @@ def some_url(request) :
 #결과 페이지 연결
 @csrf_exempt
 def result(request):
-    area2 = request.POST['area2']
-    return render(request, 'result.html', {'area2': area2})
+    area2 = int(request.POST['area2'])
+    a = yesterday_weather_data(area2)
+    b = today_weather_data(area2)
+    # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
+    context = {
+        'area2': area2,
+        'a': a,
+        'b': b
+    }
+    return render(request, 'result.html', context)
 
 
+def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지 않고 정렬됨
+    
+    a = yesterday_weather_data(108)
+    b = today_weather_data(108)
 
-def fetch_weather(request):
-    a = today_weather_data(108)
-    return HttpResponse(a)
-
+    answer = a + '<br><br><br>' + b
+    return HttpResponse(answer)
     
 def graph(request):
     context = {'place': '서울'}
     # 템플릿에 context를 전달
     return render(request, 'polls/graph.html', context)
-

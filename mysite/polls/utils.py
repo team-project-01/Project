@@ -95,71 +95,176 @@ index_number = {
     295: (79, 68)
 }
 
+index_num_dic = {
+    90: '속초',
+    93: '북춘천',
+    95: '철원',
+    98: '동두천',
+    99: '파주',
+    100: '대관령',
+    101: '춘천',
+    102: '백령도',
+    104: '북강릉',
+    105: '강릉',
+    106: '동해',
+    108: '서울',
+    112: '인천',
+    114: '원주',
+    115: '울릉도',
+    119: '수원',
+    121: '영월',
+    127: '충주',
+    129: '서산',
+    130: '울진',
+    131: '청주',
+    133: '대전',
+    135: '추풍령',
+    136: '안동',
+    137: '상주',
+    138: '포항',
+    140: '군산',
+    143: '대구',
+    146: '전주',
+    152: '울산',
+    155: '창원',
+    156: '광주',
+    159: '부산',
+    162: '통영',
+    165: '목포',
+    168: '여수',
+    169: '흑산도',
+    170: '완도',
+    172: '고창',
+    174: '순천',
+    177: '홍성',
+    184: '제주',
+    185: '고산',
+    188: '성산',
+    189: '서귀포',
+    192: '진주',
+    201: '강화',
+    202: '양평',
+    203: '이천',
+    211: '인제',
+    212: '홍천',
+    216: '태백',
+    217: '정선군',
+    221: '제천',
+    226: '보은',
+    232: '천안',
+    235: '보령',
+    236: '부여',
+    238: '금산',
+    239: '세종',
+    243: '부안',
+    244: '임실',
+    245: '정읍',
+    247: '남원',
+    248: '장수',
+    251: '고창군',
+    252: '영광군',
+    253: '김해시',
+    254: '순창군',
+    255: '북창원',
+    257: '양산시',
+    258: '보성군',
+    259: '강진군',
+    260: '장흥',
+    261: '해남',
+    262: '고흥',
+    263: '의령군',
+    264: '함양군',
+    266: '광양시',
+    268: '진도군',
+    271: '봉화',
+    272: '영주',
+    273: '문경',
+    276: '청송군',
+    277: '영덕',
+    278: '의성',
+    279: '구미',
+    281: '영천',
+    283: '경주시',
+    284: '거창',
+    285: '합천',
+    288: '밀양',
+    289: '산청',
+    294: '거제',
+    295: '남해'
+}
+
 def today_weather_data(index):
     nx, ny = index_number[index]
-    encodingKey = 'QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D'
+    encodingKey = "QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D"
 
+    # now = datetime.now() + timedelta(hours=9)
     now = datetime.now()
-    base_date = datetime.today().strftime("%Y%m%d")
-    update_time = [2,5,8,11,14,17,20,23]
-    #단기예보
-    #Base_time : 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300 (1일 8회)
-    #API 제공 시간(~이후) : 02:10, 05:10, 08:10, 11:10, 14:10, 17:10, 20:10, 23:10
+    base_date = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
+    update_time = [2, 5, 8, 11, 14, 17, 20, 23]
+    # 단기예보
+    # Base_time : 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300 (1일 8회)
+    # API 제공 시간(~이후) : 02:10, 05:10, 08:10, 11:10, 14:10, 17:10, 20:10, 23:10
     if now.hour in update_time and now.minute > 11:
-        #10분에 바로 업데이트가 안될 수도 있으므로 12분으로 잡아둠
+        # 10분에 바로 업데이트가 안될 수도 있으므로 12분으로 잡아둠
         if now.hour < 10:
-            base_time = f'0{now.hour}00'
-        else :
-            base_time = f'{now.hour}00'
-    else :
-        if 2 < now.hour < 5 : base_time = '0200'
-        elif 5 < now.hour < 8 : base_time = '0500'
-        elif 8 < now.hour < 11 : base_time = '0800'
-        elif 11 < now.hour < 14 : base_time = '1100'
-        elif 14 < now.hour < 17 : base_time = '1400'
-        elif 17 < now.hour < 20 : base_time = '1700'
-        elif 20 < now.hour < 23 : base_time = '2000'
-        elif 23 < now.hour : base_time = '2300'
-        else : 
-            base_time = '2300'
+            base_time = f"0{now.hour}00"
+        else:
+            base_time = f"{now.hour}00"
+    else:
+        if 2 < now.hour < 5:
+            base_time = "0200"
+        elif 5 < now.hour < 8:
+            base_time = "0500"
+        elif 8 < now.hour < 11:
+            base_time = "0800"
+        elif 11 < now.hour < 14:
+            base_time = "1100"
+        elif 14 < now.hour < 17:
+            base_time = "1400"
+        elif 17 < now.hour < 20:
+            base_time = "1700"
+        elif 20 < now.hour < 23:
+            base_time = "2000"
+        elif 23 < now.hour:
+            base_time = "2300"
+        else:
+            base_time = "2300"
             base_date = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
-    
 
-        
-    url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?ServiceKey=" + \
-    encodingKey + \
-    '&pageNo=1&numOfRows=100&dataType=XML' + \
-    f'&base_date={base_date}' + \
-    f'&base_time={base_time}' + \
-    f'&nx={nx}&ny={ny}'
-        
-        #할일 1. url 두개에서 크롤해온 데이터를 데이터필드에 넣어주기 , 같은 정보 저장 안되게 하기 :done
-        #할일 0. weather 들어가면 데이터 바로 불러와지도록. :done
-        #할일 2. 날짜별, 시간별로 구분한 데이터를 지역별로 구분해주기 
-        #할일 3. 다대 다 필드 구성 :done
-        #할일 4. 인코딩 키 숨기기
-        
+    url = (
+        "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?ServiceKey="
+        + encodingKey
+        + "&pageNo=1&numOfRows=500&dataType=XML"
+        + f"&base_date={base_date}"
+        + f"&base_time={base_time}"
+        + f"&nx={nx}&ny={ny}"
+    )
+
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
-        
-    if (rescode == 200): # 요청 결과 성공시에만
+
+    if rescode == 200:  # 요청 결과 성공시에만
         response_body = response.read()
-        res = xml.dom.minidom.parseString(response_body.decode('utf-8'))
+        res = xml.dom.minidom.parseString(response_body.decode("utf-8"))
         pretty_res = res.toprettyxml()
         dom = xml.dom.minidom.parseString(pretty_res)
-        tag_name = 'item'  
+        tag_name = "item"
         elements = dom.getElementsByTagName(tag_name)
         result = ""
+
         for elem in elements:  # 각 'item' 요소에 대해
-            fcstDate = elem.getElementsByTagName('fcstDate')[0].firstChild.data
-            fcstTime = elem.getElementsByTagName('fcstTime')[0].firstChild.data[:2]
-            fcstValue = elem.getElementsByTagName('fcstValue')[0].firstChild.data
-            category = elem.getElementsByTagName('category')[0].firstChild.data
-            result += f'{fcstDate} {fcstTime}시 {category} : {fcstValue}\n'
-            if category == 'TMP':
-                result += f"{fcstDate[:4]}년 {fcstDate[4:6]}월 {fcstDate[6:]}일 {fcstTime} 시의 온도는 {fcstValue}도 이다. <br>"  # 예보 날짜, 시간, 값, 카테고리를 문자열에 추가하고 각 값 뒤에 줄바꿈 추가
+            fcstDate = elem.getElementsByTagName("fcstDate")[0].firstChild.data
+            fcstTime = elem.getElementsByTagName("fcstTime")[0].firstChild.data[:2]
+            fcstValue = elem.getElementsByTagName("fcstValue")[0].firstChild.data
+            category = elem.getElementsByTagName("category")[0].firstChild.data
+
+            if fcstDate != datetime.today().strftime("%Y%m%d"): #오늘 날짜가 아닌 데이터들은 다 건너뛰는 코드 (원래는 base_date부터 시작해서 500줄까지 다 가져옴)
+                continue
+
+            if category == "TMP":
                 # 데이터베이스에 저장
+                result += f"{fcstDate[:4]}년 {fcstDate[4:6]}월 {fcstDate[6:]}일 {fcstTime}시 기온(도씨): {fcstValue} <br>"
                 if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
                     forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()  # 해당 데이터 삭제
                 forecast = forecastData()  # 새 객체 생성
@@ -168,95 +273,141 @@ def today_weather_data(index):
                 forecast.fcstValue = fcstValue
                 forecast.fnx = nx
                 forecast.fny = ny
+                forecast.index_num = index
+                forecast.indexname = index_num_dic[index]
                 forecast.save()  # 객체 저장
-            if category == 'POP': 
+                
+            if category == "PCP": #POP는 강수확률이여서 PCP : 한시간 강수확률 로 변경
+                if Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
                 gangsu = Rainpercent()
                 gangsu.fcstDate = fcstDate
                 gangsu.fcstTime = fcstTime
-                gangsu.fcstValue = fcstValue
+                #강수 없는 곳은 0으로 처리
+                if fcstValue == '강수없음':
+                    gangsu.fcstValue = 0
+                else:
+                    gangsu.fcstValue = fcstValue    
                 gangsu.fnx = nx
                 gangsu.fny = ny
+                gangsu.index_num = index
+                gangsu.indexname = index_num_dic[index]
                 gangsu.save()
-            if category == 'WSD':
+                
+            if category == "WSD":
+                if Wind.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    Wind.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
                 wwind = Wind()
                 wwind.fcstDate = fcstDate
                 wwind.fcstTime = fcstTime
                 wwind.fcstValue = fcstValue
                 wwind.fnx = nx
                 wwind.fny = ny
+                wwind.index_num = index
+                wwind.indexname = index_num_dic[index]
                 wwind.save()
-            
-        return url
-    else: # 실패시 -> 에러코드 출력
-        res = dom.getElementsByTagName('resultMsg')
+
+        # return url
+        return result
+    else:  # 실패시 -> 에러코드 출력
+        res = dom.getElementsByTagName("returnAuthMsg")
         return f"Error Code: {res}"
-    
+
 
 def yesterday_weather_data(index):
     nx, ny = index_number[index]
     yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
-    start = (datetime.today() - timedelta(days=8)).strftime("%Y%m%d")
-    
-    encodingKey = 'QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D'
-    
-    url = "http://apis.data.go.kr/1360000/AsosHourlyInfoService/getWthrDataList?serviceKey=" + \
-    encodingKey + \
-    '&numOfRows=999&pageNo=1&dataCd=ASOS&dateCd=HR' + \
-    f'&stnIds={index}&endDt={yesterday}&endHh=23' + \
-    f'&startHh=01&startDt={start}'
+    start = (datetime.today() - timedelta(days=7)).strftime("%Y%m%d")
 
-    
+    encodingKey = "QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D"
+
+    url = (
+        "http://apis.data.go.kr/1360000/AsosHourlyInfoService/getWthrDataList?serviceKey="
+        + encodingKey
+        + "&numOfRows=999&pageNo=1&dataCd=ASOS&dateCd=HR"
+        + f"&stnIds={index}&endDt={yesterday}&endHh=23"
+        + f"&startHh=01&startDt={start}"
+    )
+
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
-        
-    if (rescode == 200): # 요청 결과 성공시에만
+
+    if rescode == 200:  # 요청 결과 성공시에만
         response_body = response.read()
-        res = xml.dom.minidom.parseString(response_body.decode('utf-8'))
+        res = xml.dom.minidom.parseString(response_body.decode("utf-8"))
         pretty_res = res.toprettyxml()
         dom = xml.dom.minidom.parseString(pretty_res)
-        tag_name = 'item'  
+        tag_name = "item"
         elements = dom.getElementsByTagName(tag_name)
         result = ""
+
         for elem in elements:  # 각 'item' 요소에 대해
-            fcstDate = elem.getElementsByTagName('fcstDate')[0].firstChild.data
-            fcstTime = elem.getElementsByTagName('fcstTime')[0].firstChild.data[:2]
-            fcstValue = elem.getElementsByTagName('fcstValue')[0].firstChild.data
-            category = elem.getElementsByTagName('category')[0].firstChild.data
-            if category == 'TMP':
-                result += f"{fcstDate[:4]}년 {fcstDate[4:6]}월 {fcstDate[6:]}일 {fcstTime} 시의 온도는 {fcstValue}도 이다. <br>"  # 예보 날짜, 시간, 값, 카테고리를 문자열에 추가하고 각 값 뒤에 줄바꿈 추가
-                # 데이터베이스에 저장
-                if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()  # 해당 데이터 삭제
-                forecast = forecastData()  # 새 객체 생성
-                forecast.fcstDate = fcstDate
-                forecast.fcstTime = fcstTime
-                forecast.fcstValue = fcstValue
-                forecast.fnx = nx
-                forecast.fny = ny
-                forecast.save()  # 객체 저장
-            if category == 'POP':
-                if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
-                gangsu = Rainpercent()
-                gangsu.fcstDate = fcstDate
-                gangsu.fcstTime = fcstTime
-                gangsu.fcstValue = fcstValue
-                gangsu.fnx = nx
-                gangsu.fny = ny
-                gangsu.save()
-            if category == 'WSD':
-                if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
-                wwind = Wind()
-                wwind.fcstDate = fcstDate
-                wwind.fcstTime = fcstTime
-                wwind.fcstValue = fcstValue
-                wwind.fnx = nx
-                wwind.fny = ny
-                wwind.save()
+
+            fcstDate = elem.getElementsByTagName('tm')[0].firstChild.nodeValue[:10].replace('-', '')
+
+            # 날짜 범위 체크
+            # 위 startdate를 timedelta(7)로 바꿔도 비슷한 결과가 나온다.
+            if fcstDate < (datetime.today() - timedelta(7)).strftime("%Y%m%d"):
+                continue
+
+            fcstTime = elem.getElementsByTagName("tm")[0].firstChild.nodeValue[11:13]
+            # fcstStn = elem.getElementsByTagName('stnId')[0].firstChild.nodeValue
+
+            ta = elem.getElementsByTagName('ta')[0].firstChild.nodeValue # 기온
+
+            rn = elem.getElementsByTagName("rn")[0].firstChild          # 강수량
+            # 강수량은 빈 값을 가져오는 경우가 많음.
+            if not rn:
+                rn = 0
+            else:
+                rn = rn.nodeValue
+
+            ws = elem.getElementsByTagName("ws")[0].firstChild.nodeValue # 풍속
+
             
-        return rescode
-    else: # 실패시 -> 에러코드 출력
-        res = dom.getElementsByTagName('resultMsg')
+            # 온도
+            if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
+            forecast = forecastData()
+            forecast.fcstDate = fcstDate
+            forecast.fcstTime = fcstTime
+            forecast.fcstValue = ta
+            forecast.fnx = nx
+            forecast.fny = ny
+            forecast.index_num = index
+            forecast.indexname = index_num_dic[index]
+            forecast.save()
+
+            # 강수량
+            if Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
+            gangsu = Rainpercent()
+            gangsu.fcstDate = fcstDate
+            gangsu.fcstTime = fcstTime
+            gangsu.fcstValue = rn
+            gangsu.fnx = nx
+            gangsu.fny = ny
+            gangsu.index_num = index
+            gangsu.indexname = index_num_dic[index]
+            gangsu.save()
+
+            # 풍속
+        
+            if Wind.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    Wind.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
+            wwind = Wind()
+            wwind.fcstDate = fcstDate
+            wwind.fcstTime = fcstTime
+            wwind.fcstValue = ws
+            wwind.fnx = nx
+            wwind.fny = ny
+            wwind.index_num = index
+            wwind.indexname = index_num_dic[index]
+            wwind.save()
+
+        # return rescode
+        return url
+    else:  # 실패시 -> 에러코드 출력
+        res = dom.getElementsByTagName("resultMsg")
         return f"Error Code: {res}"
