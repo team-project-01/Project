@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .utils import today_weather_data, yesterday_weather_data
+from .utils import today_weather_data, yesterday_weather_data, index_num_dic
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 
 # 기본 페이지 연결
@@ -19,24 +20,21 @@ def result(request):
     a = yesterday_weather_data(area2)
     b = today_weather_data(area2)
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
-    context = {
-        'area2': area2,
-        'a': a,
-        'b': b
-    }
+    if area2 in index_num_dic:
+        context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a }
     return render(request, 'result.html', context)
 
-@csrf_exempt
+#그냥 잘 돌아가는지 확인하는 용 http~~~8000/weather 치면 나오는 것
 def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지 않고 정렬됨
-    area2 = int(request.POST['area2'])
-    a = yesterday_weather_data(area2)
-    b = today_weather_data(area2)
+    random = 108 #임의의 지역번호
+    a = yesterday_weather_data(random)
+    b = today_weather_data(random)
 
     answer = a + '<br><br><br>' + b
     return HttpResponse(answer)
 
 
 def graph(request):
-    context = {'place': '서울'}
+    context = {'place': "서울" }
     # 템플릿에 context를 전달
     return render(request, 'polls/graph.html', context)
