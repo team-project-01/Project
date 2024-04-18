@@ -22,7 +22,7 @@ def result(request):
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
     if area2 in index_num_dic:
         context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a }
-    return render(request, 'result.html', context)
+    return render(request, 'polls/result.html', context)
 
 #그냥 잘 돌아가는지 확인하는 용 http~~~8000/weather 치면 나오는 것
 def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지 않고 정렬됨
