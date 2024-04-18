@@ -1,4 +1,28 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Result</title>
+</head>
 <body>
-    <h1>결과</h1>
-        {{area2}}
+    <h1>Weather Information</h1>
+    <!-- 장소와 날짜에 대한 정보 표시 -->
+    <h2>Location: {{ place }}</h2>
+
+    <!-- 어제의 날씨 데이터 표시 -->
+    <div>
+        <h3>Yesterday's Weather</h3>
+        <ul>
+            <p>{{ yesterday }}</p>
+        </ul>
+    </div>
+
+    <!-- 오늘의 날씨 데이터 표시 -->
+    <div>
+        <h3>Today's Weather</h3>
+        <ul>
+            <p>{{ today }}</p>
+        </ul>
+    </div>
 </body>
+</html>
