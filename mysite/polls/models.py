@@ -17,7 +17,7 @@ class Rainpercent(models.Model): #날짜 별 강수확률 데이터 저장
     fnx = models.CharField(max_length=5)
     fny = models.CharField(max_length=5)
     def __str__(self):
-        return f'{self.fcstDate[:4]}년 {self.fcstDate[4:6]}월 {self.fcstDate[6:]}일 {self.fcstTime}시 강수확률(%)'
+        return f'{self.fcstDate[:4]}년 {self.fcstDate[4:6]}월 {self.fcstDate[6:]}일 {self.fcstTime}시 강수량(mm)'
     
 class Wind(models.Model): #날짜 별 풍속 데이터 저장
     fcstDate = models.CharField(max_length=8)
