@@ -5,7 +5,7 @@ import numpy as np
 import time
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from .models import *
+# from .models import *
 
 
 ############## 
@@ -24,9 +24,15 @@ from .models import *
 #forecastData(기온) 리스트
 #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny'} 순서
 
-# temps=[i[3] for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+#temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
 #        (forecastData, Rainpercent, Wind)
+
+
+# def aa() :
+#     a = [float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+#     a = a[0]
+#     return a
 
 
 def date_to_str( x ):
@@ -40,17 +46,19 @@ def date_to_str( x ):
 
 
 def Forecast_chart():
+    # temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+
     temps = np.random.randint(14,20, size=24)
-    yesterday_temps = np.random.randint(17, 23, size=24)
+    # yesterday_temps = np.random.randint(17, 23, size=24)
     now = time
 
     plt.plot(range(len(temps)), temps, color='red', marker='o', linestyle='solid', label='today')
-    plt.plot(range(len(yesterday_temps)), yesterday_temps, color='red', linestyle=":", label='yesterday')
+    # plt.plot(range(len(yesterday_temps)), yesterday_temps, color='red', linestyle=":", label='yesterday')
     plt.vlines(now.localtime().tm_hour, 0, 40, color='gray', linestyle='solid')
 
     plt.legend(loc='lower left', ncols=1)
-    min(temps)<min(yesterday_temps)
-    plt.ylim(min(min(temps),min(yesterday_temps))-2 , max(max(temps),max(yesterday_temps))+2)
+
+    # plt.ylim(min(min(temps),min(yesterday_temps))-2 , max(max(temps),max(yesterday_temps))+2)
     plt.ylabel("Temperatures (°C)")
     plt.xlabel("Time (h)")
 
