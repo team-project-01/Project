@@ -1,7 +1,10 @@
+
 import matplotlib.pyplot as plt
 import numpy as np
 #from django.utils import timezone
 import time
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 ############## 
 ### 날씨 데이터를 그래프화하고 이를 png로 저장합니다.
@@ -13,6 +16,15 @@ import time
 ### 1일전, 2일전, 7일전을 선택해서 비교가능하게 구현한다고 생각하고 만들어봤습니다.
 ### (의도와 맞지 않을 시 수정하거나 수하님 그래프 사용)
 ##############
+
+def date_to_str( x ):
+	# x: delta value
+	# 오늘: x=0 / 1일전: x=1 / 2일전: x=2 / 7일전: x=7
+	now = datetime.now()
+	date = now.date()-relativedelta(days=x)
+	date_str = ''.join(str(date).split('-'))
+	time_str = str(now.hour)
+	return date_str, time_str
 
 def temperature():
     temps = np.random.randint(14,20, size=24)
@@ -29,8 +41,9 @@ def temperature():
     plt.ylabel("Temperatures (°C)")
     plt.xlabel("Time (h)")
 
-    plt.savefig('graphs\temp_graph.png', format='png')
-
+    graph_path = ''
+    plt.savefig('static/graphs/temp_graph.png', format='png')
+# temperature()
 
 def rainfall():
     rainf = np.random.randint(0,4, size=24)
@@ -46,8 +59,8 @@ def rainfall():
     plt.ylabel("Rainfalls (mm)")
     plt.xlabel("Time (h)")
 
-    plt.savefig('graphs\rain_graph.png', format='png')
-
+    plt.savefig('static/graphs/rain_graph.png', format='png')
+# rainfall()
 def windspeed():
     winds = np.random.randint(1, 7, size=24)
     yesterday_winds = np.random.randint(1, 5, size=24)
@@ -62,5 +75,7 @@ def windspeed():
     plt.ylabel("Wind Speeds (m/s)")
     plt.xlabel("Time (h)")
 
-    plt.savefig('graphs\wind_graph.png', format='png')
+    plt.savefig('static/graphs/wind_graph.png', format='png')
+# windspeed()
 
+# %%
