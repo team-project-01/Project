@@ -1,5 +1,13 @@
-
-
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>과거날씨</title>
+</head>
+<body>
+    <div style="text-align : center;" class="graph">
+    <h1>Welcome to My Website</h1>
+    <p>This is a sample HTML page.</p>
+    </div>
 <form method="post" action="{% url 'result'%}" class="form" style="margin-left: 7%; margin-top: 5%;">
     <div class="col-md-3">
         <script type="text/javascript">
@@ -186,31 +194,68 @@
                 }
             }
         </script>
-        <select id="area1_id" class="form-select" name="area1" required onchange="select_gu(this);">
-            <option value="" selected disabled hidden>시/도 선택</option>
-            <option value="01">서울특별시</option>
-            <option value="02">부산광역시</option>
-            <option value="03">인천광역시</option>
-            <option value="04">대구광역시</option>
-            <option value="05">대전광역시</option>
-            <option value="06">광주광역시</option>
-            <option value="07">울산광역시</option>
-            <option value="08">세종특별자치시</option>
-            <option value="09">경기도</option>
-            <option value="10">충청북도</option>
-            <option value="11">충청남도</option>
-            <option value="12">전라남도</option>
-            <option value="13">경상북도</option>
-            <option value="14">경상남도</option>
-            <option value="15">강원특별자치도</option>
-            <option value="16">전북특별자치도</option>
-            <option value="17">제주특별자치도</option>
-        </select>
+        <div style="text-align : center;">
+            <select id="area1_id" class="form-select" name="area1" required onchange="select_gu(this);">
+                <option value="" selected disabled hidden>시/도 선택</option>
+                <option value="01">서울특별시</option>
+                <option value="02">부산광역시</option>
+                <option value="03">인천광역시</option>
+                <option value="04">대구광역시</option>
+                <option value="05">대전광역시</option>
+                <option value="06">광주광역시</option>
+                <option value="07">울산광역시</option>
+                <option value="08">세종특별자치시</option>
+                <option value="09">경기도</option>
+                <option value="10">충청북도</option>
+                <option value="11">충청남도</option>
+                <option value="12">전라남도</option>
+                <option value="13">경상북도</option>
+                <option value="14">경상남도</option>
+                <option value="15">강원특별자치도</option>
+                <option value="16">전북특별자치도</option>
+                <option value="17">제주특별자치도</option>
+            </select>
+        </div>
     </div>
     <div class="col-md-4">
         <select id="area2_id" class="form-select" name="area2" required>
             <option value="none">시/군/구 선택</option>
         </select>
     </div>
-    <button type="submit">확인</button>
+    <div class="col-md-4" style="text-align : center;">
+        <button type="submit">확인</button>
+        <!-- <a href="{{ im2 }}"><img src="{{ im }}"></a> -->
+
+        <button onclick="showImage('precipitation')">강수량</button>
+        <button onclick="showImage('wind')">바람</button>
+        <button onclick="showImage('temperature')">온도</button>
+    
+        <a id="imageLink">
+            <img id="weatherImage" src="" alt="Weather Image">
+        </a>
+    
+        <script>
+            const images = {
+                precipitation: { src: "{{ im }}", href: "{{ im2 }}" },
+                temperature: { src: "{{ im3 }}", href: "{{ im4 }}" },
+                wind: { src: "{{ im5 }}", href: "{{ im6 }}" }
+            };
+    
+            function showImage(weatherType) {
+                const image = document.getElementById('weatherImage');
+                const link = document.getElementById('imageLink');
+    
+                image.src = images[weatherType].src;
+                image.alt = weatherType + " Image";
+                link.href = images[weatherType].href;
+            }
+            window.onload = function() {
+            showImage('precipitation');
+        }
+        </script>
+    
+    </div>
+    
 </form>
+</body>
+</html>

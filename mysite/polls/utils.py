@@ -410,3 +410,21 @@ def yesterday_weather_data(index):
     else:  # 실패시 -> 에러코드 출력
         res = dom.getElementsByTagName("resultMsg")
         return f"Error Code: {res}"
+    
+def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
+    obs_dict = {'강수량': 'precip', '기온': 'temp', '바람': 'wind'}
+    # 원하는 값
+    obs_str = obs_dict.get(target_obs)
+    time_now = datetime.now() + timedelta(hours=9)
+    year = time_now.strftime("%Y")
+    month = time_now.strftime("%m")
+    date = time_now.strftime("%d")
+    hour = time_now.strftime('%H')
+    if target_obs == '강수량':
+        hour = str(int(hour) - (int(hour) % 3))
+    BASE_URL = f'https://www.weatheri.co.kr/images/super/{obs_str}{year}{month}{date}{hour}00.jpg'
+    
+    weather_dict = {'강수량': 'precip', '기온': 'forecast11', '바람': 'wind'}
+    weather_str = weather_dict.get(target_obs)
+    WEATHER_SITE = f'https://www.weatheri.co.kr/forecast/{weather_str}.php'
+    return BASE_URL, WEATHER_SITE
