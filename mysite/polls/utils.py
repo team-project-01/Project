@@ -264,7 +264,6 @@ def today_weather_data(index):
 
             if category == "TMP":
                 # 데이터베이스에 저장
-                result += f"{fcstDate[:4]}년 {fcstDate[4:6]}월 {fcstDate[6:]}일 {fcstTime}시 기온(도씨): {fcstValue} <br>"
                 if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
                     forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()  # 해당 데이터 삭제
                 forecast = forecastData()  # 새 객체 생성
@@ -308,7 +307,7 @@ def today_weather_data(index):
                 wwind.save()
 
         # return url
-        return result
+        return "오늘날씨 불러오기 성공"
     else:  # 실패시 -> 에러코드 출력
         res = dom.getElementsByTagName("returnAuthMsg")
         return f"Error Code: {res}"
@@ -407,7 +406,7 @@ def yesterday_weather_data(index):
             wwind.save()
 
         # return rescode
-        return url
+        return "과거날씨 불러오기 성공"
     else:  # 실패시 -> 에러코드 출력
         res = dom.getElementsByTagName("resultMsg")
         return f"Error Code: {res}"

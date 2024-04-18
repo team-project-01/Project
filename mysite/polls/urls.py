@@ -7,6 +7,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('weather/', views.fetch_weather, name='weather'),
     path('test/', views.graph, name='graph'),
-    path('result', views.result, name='result'),
+    path('result/', views.result, name='result'),
 
 ]
