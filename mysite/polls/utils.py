@@ -95,6 +95,104 @@ index_number = {
     295: (79, 68)
 }
 
+index_num_dic = {
+    90: '속초',
+    93: '북춘천',
+    95: '철원',
+    98: '동두천',
+    99: '파주',
+    100: '대관령',
+    101: '춘천',
+    102: '백령도',
+    104: '북강릉',
+    105: '강릉',
+    106: '동해',
+    108: '서울',
+    112: '인천',
+    114: '원주',
+    115: '울릉도',
+    119: '수원',
+    121: '영월',
+    127: '충주',
+    129: '서산',
+    130: '울진',
+    131: '청주',
+    133: '대전',
+    135: '추풍령',
+    136: '안동',
+    137: '상주',
+    138: '포항',
+    140: '군산',
+    143: '대구',
+    146: '전주',
+    152: '울산',
+    155: '창원',
+    156: '광주',
+    159: '부산',
+    162: '통영',
+    165: '목포',
+    168: '여수',
+    169: '흑산도',
+    170: '완도',
+    172: '고창',
+    174: '순천',
+    177: '홍성',
+    184: '제주',
+    185: '고산',
+    188: '성산',
+    189: '서귀포',
+    192: '진주',
+    201: '강화',
+    202: '양평',
+    203: '이천',
+    211: '인제',
+    212: '홍천',
+    216: '태백',
+    217: '정선군',
+    221: '제천',
+    226: '보은',
+    232: '천안',
+    235: '보령',
+    236: '부여',
+    238: '금산',
+    239: '세종',
+    243: '부안',
+    244: '임실',
+    245: '정읍',
+    247: '남원',
+    248: '장수',
+    251: '고창군',
+    252: '영광군',
+    253: '김해시',
+    254: '순창군',
+    255: '북창원',
+    257: '양산시',
+    258: '보성군',
+    259: '강진군',
+    260: '장흥',
+    261: '해남',
+    262: '고흥',
+    263: '의령군',
+    264: '함양군',
+    266: '광양시',
+    268: '진도군',
+    271: '봉화',
+    272: '영주',
+    273: '문경',
+    276: '청송군',
+    277: '영덕',
+    278: '의성',
+    279: '구미',
+    281: '영천',
+    283: '경주시',
+    284: '거창',
+    285: '합천',
+    288: '밀양',
+    289: '산청',
+    294: '거제',
+    295: '남해'
+}
+
 def today_weather_data(index):
     nx, ny = index_number[index]
     encodingKey = "QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D"
@@ -153,6 +251,7 @@ def today_weather_data(index):
         dom = xml.dom.minidom.parseString(pretty_res)
         tag_name = "item"
         elements = dom.getElementsByTagName(tag_name)
+        result = ""
 
         for elem in elements:  # 각 'item' 요소에 대해
             fcstDate = elem.getElementsByTagName("fcstDate")[0].firstChild.data
@@ -165,6 +264,7 @@ def today_weather_data(index):
 
             if category == "TMP":
                 # 데이터베이스에 저장
+                result += f"{fcstDate[:4]}년 {fcstDate[4:6]}월 {fcstDate[6:]}일 {fcstTime}시 기온(도씨): {fcstValue} <br>"
                 if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
                     forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()  # 해당 데이터 삭제
                 forecast = forecastData()  # 새 객체 생성
@@ -173,6 +273,8 @@ def today_weather_data(index):
                 forecast.fcstValue = fcstValue
                 forecast.fnx = nx
                 forecast.fny = ny
+                forecast.index_num = index
+                forecast.indexname = index_num_dic[index]
                 forecast.save()  # 객체 저장
                 
             if category == "PCP": #POP는 강수확률이여서 PCP : 한시간 강수확률 로 변경
@@ -188,6 +290,8 @@ def today_weather_data(index):
                     gangsu.fcstValue = fcstValue    
                 gangsu.fnx = nx
                 gangsu.fny = ny
+                gangsu.index_num = index
+                gangsu.indexname = index_num_dic[index]
                 gangsu.save()
                 
             if category == "WSD":
@@ -199,10 +303,12 @@ def today_weather_data(index):
                 wwind.fcstValue = fcstValue
                 wwind.fnx = nx
                 wwind.fny = ny
+                wwind.index_num = index
+                wwind.indexname = index_num_dic[index]
                 wwind.save()
 
-        return url
-        # return result
+        # return url
+        return result
     else:  # 실패시 -> 에러코드 출력
         res = dom.getElementsByTagName("returnAuthMsg")
         return f"Error Code: {res}"
@@ -211,7 +317,7 @@ def today_weather_data(index):
 def yesterday_weather_data(index):
     nx, ny = index_number[index]
     yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
-    start = (datetime.today() - timedelta(days=8)).strftime("%Y%m%d")
+    start = (datetime.today() - timedelta(days=7)).strftime("%Y%m%d")
 
     encodingKey = "QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D"
 
@@ -269,6 +375,8 @@ def yesterday_weather_data(index):
             forecast.fcstValue = ta
             forecast.fnx = nx
             forecast.fny = ny
+            forecast.index_num = index
+            forecast.indexname = index_num_dic[index]
             forecast.save()
 
             # 강수량
@@ -280,6 +388,8 @@ def yesterday_weather_data(index):
             gangsu.fcstValue = rn
             gangsu.fnx = nx
             gangsu.fny = ny
+            gangsu.index_num = index
+            gangsu.indexname = index_num_dic[index]
             gangsu.save()
 
             # 풍속
@@ -292,10 +402,12 @@ def yesterday_weather_data(index):
             wwind.fcstValue = ws
             wwind.fnx = nx
             wwind.fny = ny
+            wwind.index_num = index
+            wwind.indexname = index_num_dic[index]
             wwind.save()
 
         # return rescode
         return url
     else:  # 실패시 -> 에러코드 출력
-        res = dom.getElementsByTagName("returnAuthMsg")
+        res = dom.getElementsByTagName("resultMsg")
         return f"Error Code: {res}"

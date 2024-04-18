@@ -18,9 +18,16 @@ def some_url(request) :
 #결과 페이지 연결
 @csrf_exempt
 def result(request):
-    area2 = request.POST['area2']
-    return render(request, 'result.html', {'area2': area2})
-
+    area2 = int(request.POST['area2'])
+    a = yesterday_weather_data(area2)
+    b = today_weather_data(area2)
+    # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
+    context = {
+        'area2': area2,
+        'a': a,
+        'b': b
+    }
+    return render(request, 'result.html', context)
 
 
 def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지 않고 정렬됨
