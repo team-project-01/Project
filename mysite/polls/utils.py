@@ -234,7 +234,7 @@ def today_weather_data(index):
     url = (
         "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?ServiceKey="
         + encodingKey
-        + "&pageNo=1&numOfRows=500&dataType=XML"
+        + "&pageNo=1&numOfRows=1000&dataType=XML"
         + f"&base_date={base_date}"
         + f"&base_time={base_time}"
         + f"&nx={nx}&ny={ny}"
@@ -423,7 +423,7 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
     
     if target_obs == '강수량':
         if int(hour) < 3:
-            hour = '00'
+            hour ='00'
         elif int(hour) < 6:
             hour = '03'
         elif int(hour) < 9:
@@ -438,8 +438,7 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
             hour = '18'
         else :
             hour = '21'
-        
-    
+            
     BASE_URL = f'https://www.weatheri.co.kr/images/super/{obs_str}{year}{month}{date}{hour}00.jpg'
     
     weather_dict = {'강수량': 'precip', '기온': 'forecast11', '바람': 'wind'}
