@@ -5,6 +5,8 @@ import datetime
 from .models import *
 import os
 from datetime import timedelta
+import numpy as np
+import matplotlib.patches as patches
 
 #temps=[float(i[3]) for i in ForecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
@@ -37,7 +39,7 @@ def charts(area2):
     temps_7day_ago = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[0].set_title('Temperatures', fontsize = 12, fontweight ="bold")
-    axs[0].plot([i for i in range(len(temps_today))], temps_today, color='red', marker='o', linestyle='solid', label='today')
+    axs[0].plot([i for i in range(len(temps_today))], temps_today, color='red', marker='.', linestyle='solid', label='today')
     axs[0].plot([i for i in range(len(temps_1day_ago))], temps_1day_ago, color='black', linestyle=":", label='1 day ago')
     axs[0].plot([i for i in range(len(temps_2day_ago))], temps_2day_ago, color='gray', linestyle=":", label='2 day ago')
     axs[0].plot([i for i in range(len(temps_7day_ago))], temps_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
@@ -52,8 +54,8 @@ def charts(area2):
     all_temps2.sort(key=lambda x:x[1])
 
     #수직선 모든 값들(7일전~오늘)중 제일 작은 값, 큰 값
-    axs[0].vlines(all_temps2[0][0], min(all_temps)-4, max(all_temps)+4, color='gray', linestyle='solid')
-    axs[0].vlines(all_temps2[-1][0], min(all_temps)-4, max(all_temps)+4, color='gray', linestyle='solid')
+    axs[0].scatter(all_temps2[0][0], all_temps2[0][1], s=100, c='cyan', alpha=0.7, marker='o')
+    axs[0].scatter(all_temps2[-1][0], all_temps2[-1][1], s=100, c='magenta', alpha=0.7, marker='o')
 
     axs[0].legend(loc='upper left', ncols=1)
     axs[0].set_ylabel("Temperatures (°C)")
@@ -70,7 +72,7 @@ def charts(area2):
     wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
-    axs[1].plot([i for i in range(len(wind_today))], wind_today, color='green', marker='o', linestyle='solid', label='today')
+    axs[1].plot([i for i in range(len(wind_today))], wind_today, color='green', marker=',', linestyle='solid', label='today')
     axs[1].plot([i for i in range(len(wind_1day_ago))], wind_1day_ago, color='black', linestyle=":", label='1 day ago')
     axs[1].plot([i for i in range(len(wind_2day_ago))], wind_2day_ago, color='gray', linestyle=":", label='2 day ago')
     axs[1].plot([i for i in range(len(wind_7day_ago))], wind_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
@@ -83,8 +85,8 @@ def charts(area2):
     all_wind2 = wind1+wind2+wind3+wind4
     all_wind2.sort(key=lambda x:x[1])
 
-    axs[1].vlines(all_wind2[0][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
-    axs[1].vlines(all_wind2[-1][0], min(all_wind)-4, max(all_wind)+4, color='gray', linestyle='solid')
+    axs[1].scatter(all_wind2[0][0], all_wind2[0][1], s=100, c='cyan', alpha=0.7, marker='o')
+    axs[1].scatter(all_wind2[-1][0], all_wind2[-1][1], s=100, c='magenta', alpha=0.7, marker='o')
 
     axs[1].legend(loc='upper left', ncols=1)
     axs[1].set_ylabel("Wind Speeds (m/s)")
@@ -102,7 +104,7 @@ def charts(area2):
     rain_7day_ago = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
-    axs[2].plot([i for i in range(len(rain_today))], rain_today, color='blue', marker='o', linestyle='solid', label='today')
+    axs[2].plot([i for i in range(len(rain_today))], rain_today, color='blue', marker=',', linestyle='solid', label='today')
     axs[2].plot([i for i in range(len(rain_1day_ago))], rain_1day_ago, color='black', linestyle=":", label='1 day ago')
     axs[2].plot([i for i in range(len(rain_2day_ago))], rain_2day_ago, color='gray', linestyle=":", label='2 day ago')
     axs[2].plot([i for i in range(len(rain_7day_ago))], rain_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
@@ -115,8 +117,8 @@ def charts(area2):
     all_rain2 = rain1+rain2+rain3+rain4
     all_rain2.sort(key=lambda x:x[1])
 
-    axs[2].vlines(all_rain2[0][0], min(all_rain)-4, max(all_rain)+4, color='gray', linestyle='solid')
-    axs[2].vlines(all_rain2[-1][0], min(all_rain)-4, max(all_rain)+4, color='gray', linestyle='solid')
+    axs[2].scatter(all_rain2[0][0], all_rain2[0][1], s=100, c='cyan', alpha=0.7, marker='o')
+    axs[2].scatter(all_rain2[-1][0], all_rain2[-1][1], s=100, c='magenta', alpha=0.7, marker='o')
 
     axs[2].legend(loc='upper left', ncols=1)
     axs[2].set_ylabel("Precipitation (mm)")
