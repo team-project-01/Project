@@ -1,14 +1,10 @@
-#%%
+import matplotlib
+matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
-import numpy as np
-#from django.utils import timezone
-import time
 import datetime
-from dateutil.relativedelta import relativedelta
 from .models import *
 import os
 from datetime import timedelta
-import numpy as np
 
 #temps=[float(i[3]) for i in ForecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
@@ -128,6 +124,8 @@ def charts(area2):
     axs[2].set_ylim(-1, max(all_rain)+4)
     axs[2].set_xlim(0, 23)
     plt.setp(axs[2], xticks=[3,6,9,12,15,18,21])
+    
+    os.nice(10)
     rain_yticks = [i for i in range(-1,int(max(all_rain)+4),int((max(all_rain)+4)/((max(all_rain)+4)/2)))]
     plt.setp(axs[2], yticks=[-1,0]+rain_yticks)
 
