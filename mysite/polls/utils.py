@@ -438,6 +438,7 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
             hour = '18'
         else :
             hour = '21'
+            
     BASE_URL = f'https://www.weatheri.co.kr/images/super/{obs_str}{year}{month}{date}{hour}00.jpg'
     
     weather_dict = {'강수량': 'precip', '기온': 'forecast11', '바람': 'wind'}
