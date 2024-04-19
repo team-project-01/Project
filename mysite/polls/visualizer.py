@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import datetime
 from .models import *
@@ -127,7 +126,6 @@ def charts(area2):
     axs[2].set_xlim(0, 23)
     plt.setp(axs[2], xticks=[3,6,9,12,15,18,21])
     
-    os.nice(10)
     rain_yticks = [i for i in range(-1,int(max(all_rain)+4),int((max(all_rain)+4)/((max(all_rain)+4)/2)))]
     plt.setp(axs[2], yticks=[-1,0]+rain_yticks)
 
