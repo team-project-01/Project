@@ -2,7 +2,6 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import datetime
-from dateutil.relativedelta import relativedelta
 from .models import *
 import os
 from datetime import timedelta
@@ -14,8 +13,7 @@ from datetime import timedelta
 # 절대경로
 abspath = os.path.dirname(os.path.abspath(__file__)) 
 abspath = abspath.replace('\\','/')
-abspath = abspath+'/static/graphs/' #내꺼만!!!!!!!!하고 주석처리해주기
-
+abspath = abspath+'/static/graphs/'
 #한글 고딕체
 #plt.rcParams['font.family'] ='Malgun Gothic'
 #plt.rcParams['axes.unicode_minus'] =False
