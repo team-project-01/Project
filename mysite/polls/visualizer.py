@@ -92,10 +92,11 @@ def charts(area2):
     axs[1].legend(loc='upper left', ncols=1)
     axs[1].set_ylabel("Wind Speeds (m/s)")
     axs[1].set_xlabel("Time (h)")
-    axs[1].set_ylim(min(all_wind)-4, max(all_wind)+4)
+    axs[1].set_ylim(-1, max(all_wind)+4)
     axs[1].set_xlim(0, 23)
     plt.setp(axs[1], xticks=[3,6,9,12,15,18,21])
-
+    wind_yticks = [i for i in range(-1,int(max(all_wind)+4),int((max(all_wind)+4)/((max(all_wind)+4)/2)))]
+    plt.setp(axs[1], yticks=[-1,0]+wind_yticks)
 
     # #강수량
     rain_today = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=today, index_num=num).values_list()]
@@ -123,9 +124,11 @@ def charts(area2):
     axs[2].legend(loc='upper left', ncols=1)
     axs[2].set_ylabel("Precipitation (mm)")
     axs[2].set_xlabel("Time (h)")
-    axs[2].set_ylim(min(all_rain)-4, max(all_rain)+4)
+    axs[2].set_ylim(-1, max(all_rain)+4)
     axs[2].set_xlim(0, 23)
     plt.setp(axs[2], xticks=[3,6,9,12,15,18,21])
+    rain_yticks = [i for i in range(-1,int(max(all_rain)+4),int((max(all_rain)+4)/((max(all_rain)+4)/2)))]
+    plt.setp(axs[2], yticks=[-1,0]+rain_yticks)
 
     fig.tight_layout()
     plt.savefig(abspath+'all_graph.png', format='png')
