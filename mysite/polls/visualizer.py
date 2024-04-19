@@ -19,6 +19,13 @@ abspath = os.path.dirname(os.path.abspath(__file__))
 abspath = abspath.replace('\\','/')
 abspath = abspath+'/static/graphs/'
 
+
+t =datetime.date.today()
+today = t.strftime("%Y%m%d")
+day_1_ago = (t - timedelta(days=1)).strftime("%Y%m%d")
+day_2_ago = (t - timedelta(days=2)).strftime("%Y%m%d")
+day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
+
 #한글 고딕체
 #plt.rcParams['font.family'] ='Malgun Gothic'
 #plt.rcParams['axes.unicode_minus'] =False
@@ -26,12 +33,6 @@ abspath = abspath+'/static/graphs/'
 def charts(area2):
     num = area2
     fig, axs = plt.subplots(1, 3, figsize=(20, 5))
-
-    t =datetime.date.today()
-    today = t.strftime("%Y%m%d")
-    day_1_ago = (t - timedelta(days=1)).strftime("%Y%m%d")
-    day_2_ago = (t - timedelta(days=2)).strftime("%Y%m%d")
-    day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
 
     #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
     temps_today = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
@@ -132,4 +133,44 @@ def charts(area2):
 
     fig.tight_layout()
     plt.savefig(abspath+'all_graph.png', format='png')
+
+
+
+def min_max_temps(area2) :
+    num = area2
+
+    temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
+    temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+
+    all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
+    
+    return [min(all_temps), max(all_temps)]
+
+def min_max_wind(area2) :
+    num = area2
+
+    wind_today = [float(i[3]) for i in Wind.objects.filter(fcstDate=today, index_num=num).values_list()]
+    wind_1day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    wind_2day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+
+    all_wind = wind_today+wind_1day_ago+wind_2day_ago+wind_7day_ago
+    return [min(all_wind),max(all_wind)]
+
+def min_max_rain(area2) :
+    num = area2
+    
+    rain_today = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
+    rain_1day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain_2day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    rain_7day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+
+    all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
+
+    return [min(all_rain), max(all_rain)]
+
+
+
     # plt.show()

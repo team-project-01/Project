@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import time
-from .visualizer import charts
+from .visualizer import charts, min_max_rain, min_max_wind, min_max_temps
 from .serializers import *
 from .models import *
 
@@ -33,6 +33,15 @@ def result(request):
     area2 = int(request.POST["area2"])
     a = yesterday_weather_data(area2)
     b = today_weather_data(area2)
+
+    charts(area2)
+    time.sleep(0.6) #이미지 저장시간
+    rain_min = min_max_rain(area2)[0]
+    rain_max = min_max_rain(area2)[1]
+    wind_min = min_max_wind(area2)[0]
+    wind_max = min_max_wind(area2)[1]
+    temps_min = min_max_temps(area2)[0]
+    temps_max = min_max_temps(area2)[1]
 
     time_now = datetime.now()
     now_date = time_now.strftime("%Y%m%d")
@@ -85,13 +94,15 @@ def result(request):
             "today": b,
             "yesterday": a,
             "info_string": info_string,
+            'rain_min' : rain_min,
+            'rain_max':rain_max,
+            'wind_min' : wind_min,
+            'wind_max' : wind_max,
+            'temps_min' : temps_min,
+            'temps_max' : temps_max,
             # "rain_percent": rain_percent,
             # "wind": wind,
         }
-
-    # 차트 생성
-    charts(area2)
-    time.sleep(0.6)  # 이미지 저장시간
 
     return render(request, "result.html", context)
 
