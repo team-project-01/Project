@@ -35,8 +35,15 @@ def result(request):
     yesterday_weather_data(area2)
     today_weather_data(area2)
     a,b,c = get_weather_info(area2)
+    min_temp, max_temp = min_max_temps(area2)
+    min_wind, max_wind = min_max_wind(area2)
     context = { "a":a, "b":b, "c": c,
-        "place": index_num_dic[area2] }
+        "place": index_num_dic[area2],
+        "min_temp": min_temp,
+        "max_temp": max_temp,
+        "min_wind": min_wind,
+        "max_wind": max_wind,
+        }
     # 차트 생성
     charts(area2)
     time.sleep(0.6)  # 이미지 저장시간
