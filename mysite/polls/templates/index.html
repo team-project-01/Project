@@ -222,12 +222,12 @@
     </div>
     <div class="right">
         <h3>보고싶은 정보를 선택해주세요</h3>
-        <div>
+        <div >
             <div class="leftImg">
                 <!-- <a href="{{ im2 }}"><img src="{{ im }}"></a> -->
-                <button class="button" onclick="showImage('temperature')">온도</button>        
-                <button class="button" onclick="showImage('precipitation')">강수량</button>
-                <button class="button" onclick="showImage('wind')" style=>바람</button>
+                <button id="b1" class="button" onclick="showImage('temperature'); change_btn(event)">온도</button>        
+                <button id="b2" class="button" onclick="showImage('precipitation'); change_btn(event)">강수량</button>
+                <button id="b3" class="button" onclick="showImage('wind'); change_btn(event)" style=>바람</button>
             </div>
             <a id="imageLink">
                 <img id="weatherImage" src="" alt="Weather Image" class="img">
@@ -253,8 +253,21 @@
             }
             
             window.onload = function() {
-            showImage('temperature');
+                showImage('temperature');
+                b1.classList.add("active");
             }
+            
+            function change_btn(e) {
+                var btns = document.querySelectorAll(".button");
+                btns.forEach(function (btn, i) {
+                    if (e.currentTarget == btn) {
+                    btn.classList.add("active");
+                    } else {
+                    btn.classList.remove("active");
+                    }
+                });
+            }
+            
         </script>
     </div>
 </body>

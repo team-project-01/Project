@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import forecastData, Rainpercent, Wind
+from .models import *
 
-admin.site.register(forecastData)
-admin.site.register(Rainpercent)
+admin.site.register(ForecastData)
+admin.site.register(RainPercent)
 admin.site.register(Wind)
