@@ -136,40 +136,40 @@ def charts(area2):
 
 
 
-    def min_max_temps(num) :
-        num = area2
+def min_max_temps(area2) :
+    num = area2
 
-        temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
-        temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-        temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-        temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
+    temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
-        all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
-        
-        return [min(all_temps), max(all_temps)]
-
-    def min_max_wind(num) :
-        num = area2
-
-        wind_today = [float(i[3]) for i in Wind.objects.filter(fcstDate=today, index_num=num).values_list()]
-        wind_1day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-        wind_2day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-        wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
-
-        all_wind = wind_today+wind_1day_ago+wind_2day_ago+wind_7day_ago
-        return [min(all_wind),max(all_wind)]
+    all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
     
-    def min_max_rain(num) :
-        num = area2
-        
-        rain_today = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
-        rain_1day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-        rain_2day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-        rain_7day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    return [min(all_temps), max(all_temps)]
 
-        all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
+def min_max_wind(area2) :
+    num = area2
 
-        return [min(all_rain), max(all_rain)]
+    wind_today = [float(i[3]) for i in Wind.objects.filter(fcstDate=today, index_num=num).values_list()]
+    wind_1day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    wind_2day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+
+    all_wind = wind_today+wind_1day_ago+wind_2day_ago+wind_7day_ago
+    return [min(all_wind),max(all_wind)]
+
+def min_max_rain(area2) :
+    num = area2
+    
+    rain_today = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
+    rain_1day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain_2day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    rain_7day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+
+    all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
+
+    return [min(all_rain), max(all_rain)]
 
 
 

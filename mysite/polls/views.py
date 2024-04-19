@@ -26,15 +26,21 @@ def result(request):
     
     charts(area2)
     time.sleep(0.6) #이미지 저장시간
-    
+    rain_min = min_max_rain(area2)[0]
+    rain_max = min_max_rain(area2)[1]
+    wind_min = min_max_wind(area2)[0]
+    wind_max = min_max_wind(area2)[1]
+    temps_min = min_max_temps(area2)[0]
+    temps_max = min_max_temps(area2)[1]
+
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
-    
+
     if area2 in index_num_dic:
 
     #     context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a }
     # return render(request, 'polls/result.html', context)
 
-        context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a ,}
+        context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a , 'rain_min' : rain_min, 'rain_max':rain_max, 'wind_min' : wind_min, 'wind_max' : wind_max, 'temps_min' : temps_min, 'temps_max' : temps_max}
 
     # 차트 생성
     
@@ -55,6 +61,7 @@ def fetch_weather(request): #어제꺼부터 받아와야 데이터가 꼬이지
 def graph(request):
     charts()
     time.sleep(0.5)
+   
     
     context = {'place': '서울'}
 
