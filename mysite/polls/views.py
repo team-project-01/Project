@@ -4,7 +4,7 @@ from .utils import today_weather_data, yesterday_weather_data,get_weather_image,
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import time
-from .visualizer import charts
+from .visualizer import charts, min_max_rain, min_max_wind, min_max_temps
 
 # Create your views here.
 
@@ -24,6 +24,9 @@ def result(request):
     a = yesterday_weather_data(area2)
     b = today_weather_data(area2)
     
+    charts(area2)
+    time.sleep(0.6) #이미지 저장시간
+    
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
     
     if area2 in index_num_dic:
@@ -34,9 +37,8 @@ def result(request):
         context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a ,}
 
     # 차트 생성
-    charts(area2)
-    time.sleep(0.6) #이미지 저장시간
-
+    
+    
     return render(request, 'result.html', context)
 
 
