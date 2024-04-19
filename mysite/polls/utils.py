@@ -1,7 +1,7 @@
 import urllib.request
 import xml.dom.minidom
 from datetime import datetime, timedelta
-from .models import forecastData , Rainpercent , Wind
+from .models import *
 
 index_number = {
     90: (87, 140),
@@ -264,9 +264,9 @@ def today_weather_data(index):
 
             if category == "TMP":
                 # 데이터베이스에 저장
-                if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()  # 해당 데이터 삭제
-                forecast = forecastData()  # 새 객체 생성
+                if ForecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    ForecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()  # 해당 데이터 삭제
+                forecast = ForecastData()  # 새 객체 생성
                 forecast.fcstDate = fcstDate
                 forecast.fcstTime = fcstTime
                 forecast.fcstValue = fcstValue
@@ -277,9 +277,9 @@ def today_weather_data(index):
                 forecast.save()  # 객체 저장
                 
             if category == "PCP": #POP는 강수확률이여서 PCP : 한시간 강수확률 로 변경
-                if Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
-                gangsu = Rainpercent()
+                if RainPercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    RainPercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
+                gangsu = RainPercent()
                 gangsu.fcstDate = fcstDate
                 gangsu.fcstTime = fcstTime
                 #강수 없는 곳은 0으로 처리
@@ -366,9 +366,9 @@ def yesterday_weather_data(index):
 
             
             # 온도
-            if forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    forecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
-            forecast = forecastData()
+            if ForecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    ForecastData.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
+            forecast = ForecastData()
             forecast.fcstDate = fcstDate
             forecast.fcstTime = fcstTime
             forecast.fcstValue = ta
@@ -379,9 +379,9 @@ def yesterday_weather_data(index):
             forecast.save()
 
             # 강수량
-            if Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
-                    Rainpercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
-            gangsu = Rainpercent()
+            if RainPercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).exists():  # 이미 해당 날짜, 시간, nx, ny의 데이터가 존재하면
+                    RainPercent.objects.filter(fcstDate=fcstDate, fcstTime=fcstTime, fnx=nx, fny=ny).delete()
+            gangsu = RainPercent()
             gangsu.fcstDate = fcstDate
             gangsu.fcstTime = fcstTime
             gangsu.fcstValue = rn
