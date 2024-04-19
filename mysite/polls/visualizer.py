@@ -72,7 +72,7 @@ def charts(area2):
     wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[1].set_title('Wind Speeds', fontsize = 12, fontweight ="bold")
-    axs[1].plot([i for i in range(len(wind_today))], wind_today, color='green', marker=',', linestyle='solid', label='today')
+    axs[1].plot([i for i in range(len(wind_today))], wind_today, color='green', marker='.', linestyle='solid', label='today')
     axs[1].plot([i for i in range(len(wind_1day_ago))], wind_1day_ago, color='black', linestyle=":", label='1 day ago')
     axs[1].plot([i for i in range(len(wind_2day_ago))], wind_2day_ago, color='gray', linestyle=":", label='2 day ago')
     axs[1].plot([i for i in range(len(wind_7day_ago))], wind_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
@@ -104,7 +104,7 @@ def charts(area2):
     rain_7day_ago = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
-    axs[2].plot([i for i in range(len(rain_today))], rain_today, color='blue', marker=',', linestyle='solid', label='today')
+    axs[2].plot([i for i in range(len(rain_today))], rain_today, color='blue', marker='.', linestyle='solid', label='today')
     axs[2].plot([i for i in range(len(rain_1day_ago))], rain_1day_ago, color='black', linestyle=":", label='1 day ago')
     axs[2].plot([i for i in range(len(rain_2day_ago))], rain_2day_ago, color='gray', linestyle=":", label='2 day ago')
     axs[2].plot([i for i in range(len(rain_7day_ago))], rain_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
