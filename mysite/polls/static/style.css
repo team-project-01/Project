@@ -1,29 +1,69 @@
 body {
-	width: 1200px;
-    height: 100%;
-	min-width: 100%;
-	min-height: 100%;
-    text-align: center;
-	align-items: center;
-	background: #16a085;
-	background: linear-gradient(
-		213deg,
-		#30336b 0%,
-		#16a085 100%
-	) fixed;    
-    color: white;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(
+      213deg,
+      #30336b 0%,
+      #16a085 100%
+  ) fixed;
+  width: 100%; /* body의 너비를 뷰포트의 100%로 설정 */
+  min-height: 100vh; /* 최소 높이를 브라우저 창의 높이로 설정 */
+}
 
+main {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: white;
+  background: linear-gradient(
+      213deg,
+      #30336b 0%,
+      #16a085 100%
+  ) fixed;
+  width: 100%; /* main의 너비를 body와 동일하게 설정 */
+  max-width: 1200px; /* 최대 너비를 1200px로 제한 */
+  margin: 0 auto; /* 중앙 정렬 */
+  min-height: 70vh; /* 최소 높이 설정 */
+  text-align: center;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  height: 100px;
+  color: white;
+  text-align: center;
+  line-height: 100px;
+  font-size: 20px;
+  font-weight: 700;
+  background: none; /* 배경 설정을 제거 (필요에 따라 다시 추가) */
+  min-height: 30vh;
+}
+
+footer {
+  width: 100%;                    /* 너비를 뷰포트의 100%로 설정 */
+  height: 100px;                  /* 푸터의 높이를 100px로 설정 */
+  color: white;                   /* 글자 색상을 흰색으로 설정 */
+  text-align: center ;             /* 텍스트를 중앙 정렬 */
+  line-height: 100px;             /* 줄 높이를 푸터의 높이와 같게 설정하여 텍스트를 중앙에 배치 */
+  font-size: 20px;                /* 글자 크기 설정 */
+  font-weight: 700;    
+           /* 글자 굵기 설정 */
 }
 
 div {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: flex-start;  
 }
 
 .top {
 	width: 100%;
 	height: 15%;
 	line-height: 120px;
+  text-align: center;
 }
 
 .top2 {
@@ -44,7 +84,7 @@ div {
 
 .left {
   width: 35%;
-  height: 85%;
+  height: 100%;
   float: left;
   box-sizing: border-box;
   text-align: center;
@@ -58,7 +98,7 @@ div {
 }
 .right {
 	width: 35%;
-	height: 85%;  
+	height: 100%;  
 	float: right;
 	box-sizing: border-box;
     margin-right: 10%;
