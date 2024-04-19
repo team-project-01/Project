@@ -1,10 +1,7 @@
-#%%
+import matplotlib
+matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
-import numpy as np
-#from django.utils import timezone
-import time
 import datetime
-from dateutil.relativedelta import relativedelta
 from .models import *
 import os
 from datetime import timedelta
@@ -129,6 +126,8 @@ def charts(area2):
     axs[2].set_ylim(-1, max(all_rain)+4)
     axs[2].set_xlim(0, 23)
     plt.setp(axs[2], xticks=[3,6,9,12,15,18,21])
+    
+    os.nice(10)
     rain_yticks = [i for i in range(-1,int(max(all_rain)+4),int((max(all_rain)+4)/((max(all_rain)+4)/2)))]
     plt.setp(axs[2], yticks=[-1,0]+rain_yticks)
 
@@ -147,7 +146,7 @@ def min_max_temps(area2) :
 
     all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
     
-    return [min(all_temps), max(all_temps)]
+    return min(all_temps), max(all_temps)
 
 def min_max_wind(area2) :
     num = area2
@@ -158,7 +157,7 @@ def min_max_wind(area2) :
     wind_7day_ago = [float(i[3]) for i in Wind.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     all_wind = wind_today+wind_1day_ago+wind_2day_ago+wind_7day_ago
-    return [min(all_wind),max(all_wind)]
+    return min(all_wind),max(all_wind)
 
 def min_max_rain(area2) :
     num = area2
@@ -170,7 +169,7 @@ def min_max_rain(area2) :
 
     all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
 
-    return [min(all_rain), max(all_rain)]
+    return min(all_rain), max(all_rain)
 
 
 

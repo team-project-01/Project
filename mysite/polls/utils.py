@@ -445,3 +445,72 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
     weather_str = weather_dict.get(target_obs)
     WEATHER_SITE = f'https://www.weatheri.co.kr/forecast/{weather_str}.php'
     return BASE_URL, WEATHER_SITE
+
+def get_weather_info(area2):
+    time_now = datetime.now()
+    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
+    now_date = time_now.strftime("%Y%m%d")
+    now_time = time_now.strftime("%H")
+
+    temperature_today = float(
+        ForecastData.objects.filter(
+            fcstDate=now_date, fcstTime=now_time, index_num=area2
+        )
+        .values("fcstValue")[0]
+        .get("fcstValue")
+    )
+    temperature_yesterday = float(
+        ForecastData.objects.filter(
+            fcstDate=yesterday, fcstTime=now_time, index_num=area2
+        )
+        .values("fcstValue")[0]
+        .get("fcstValue")
+    )
+
+    rain_percent = float(
+        RainPercent.objects.filter(
+            fcstDate=now_date, fcstTime=now_time, index_num=area2
+        )
+        .values("fcstValue")[0]
+        .get("fcstValue")
+    )
+
+    if rain_percent > 0:
+        # rain_percent_txt = '오늘 비가오네요! 우산챙기세요! &#9730'
+        rain_percent_txt = "비가 올 것 같아요! 우산챙기세요..!☔️"
+    else:
+        rain_percent_txt = "비소식은 없네요☀️"
+
+    wind_today = float(
+        Wind.objects.filter(fcstDate=now_date, fcstTime=now_time, index_num=area2)
+        .values("fcstValue")[0]
+        .get("fcstValue")
+    )
+    
+    wind_yesterday = float(
+        Wind.objects.filter(fcstDate=yesterday, fcstTime=now_time, index_num=area2)
+        .values("fcstValue")[0]
+        .get("fcstValue")
+    )
+
+    if wind_today > 7:
+        wind_txt = "강한 바람"
+    else:
+        wind_txt = "선선한 바람"
+
+    info_string1 = f'어제 {now_time}시의 🌡️기온은 {temperature_yesterday}°C 였는데 지금은 {temperature_today}°C 로,' + \
+    f'어제보다 {round(abs(temperature_today - temperature_yesterday),2)}°C'
+    
+    if temperature_today - temperature_yesterday > 0:
+        info_string1 += ' 높아요.'
+    else:
+        info_string1 += ' 낮아요.'
+    
+    info_string2 = f'어제 {now_time}시의 🌪️풍속은 {wind_yesterday}m/s 였는데, 지금은 {wind_today}m/s 로 ' + \
+        f'{wind_txt}이 불고 있어요.'
+    
+    info_string3 = f'오늘 {index_num_dic[area2]}에 {now_time}시에는 {rain_percent_txt}'
+    
+    
+
+    return info_string1, info_string2, info_string3

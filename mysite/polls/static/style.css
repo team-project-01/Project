@@ -29,6 +29,7 @@ p {
 	width: 100%;
 	height: 15%;
 	line-height: 120px;
+  text-align: center;
 }
 
 .top2 {
@@ -83,9 +84,9 @@ p {
 }
 
 .img {
-  width: 258px;
   height: 291px;
 }
+
 
 .img2{
   width: 1000px;
