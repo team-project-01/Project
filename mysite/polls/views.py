@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import time
-from .visualizer import charts
+from .visualizer import charts, min_max_rain, min_max_wind, min_max_temps
 from .serializers import *
 from .models import *
 

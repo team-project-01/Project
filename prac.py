@@ -1,6 +1,6 @@
 #%%
-a = [i for i in range(3,5)]
-print(a)
-a = [-1,0] + a
-print(a)
+num = [1,2,3,4]
+def min_max_rain(num) :
+    all_rain = num
+    return [min(all_rain), max(all_rain)]
 # %%
