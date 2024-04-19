@@ -6,9 +6,9 @@ from .models import *
 import os
 from datetime import timedelta
 
-#temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
+#temps=[float(i[3]) for i in ForecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
-#        (forecastData, Rainpercent, Wind)
+#        (ForecastData, RainPercent, Wind)
 
 # 절대경로
 abspath = os.path.dirname(os.path.abspath(__file__)) 
@@ -29,10 +29,10 @@ def charts(area2):
     day_7_ago = (t - timedelta(days=7)).strftime("%Y%m%d")
 
     #{'id','fcstDate','fcstTime','fcstValue', 'fnx', 'fny','지역명'} 순서
-    temps_today = [float(i[3]) for i in forecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
-    temps_1day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-    temps_2day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-    temps_7day_ago = [float(i[3]) for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    temps_today = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=today, index_num= num).values_list()]
+    temps_1day_ago = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps_2day_ago = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    temps_7day_ago = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[0].set_title('Temperatures', fontsize = 12, fontweight ="bold")
     axs[0].plot([i for i in range(len(temps_today))], temps_today, color='red', marker='o', linestyle='solid', label='today')
@@ -42,10 +42,10 @@ def charts(area2):
 
     #시간, 값
     all_temps = temps_today+temps_1day_ago+temps_2day_ago+temps_7day_ago
-    temps1 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=today, index_num=num).values_list()]
-    temps2 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-    temps3 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-    temps4 = [[float(i[2]),float(i[3])] for i in forecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    temps1 = [[float(i[2]),float(i[3])] for i in ForecastData.objects.filter(fcstDate=today, index_num=num).values_list()]
+    temps2 = [[float(i[2]),float(i[3])] for i in ForecastData.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    temps3 = [[float(i[2]),float(i[3])] for i in ForecastData.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    temps4 = [[float(i[2]),float(i[3])] for i in ForecastData.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
     all_temps2 = temps1+temps2+temps3+temps4
     all_temps2.sort(key=lambda x:x[1])
 
@@ -94,10 +94,10 @@ def charts(area2):
     plt.setp(axs[1], yticks=[-1,0]+wind_yticks)
 
     # #강수량
-    rain_today = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
-    rain_1day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-    rain_2day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-    rain_7day_ago = [float(i[3]) for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    rain_today = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=today, index_num=num).values_list()]
+    rain_1day_ago = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain_2day_ago = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    rain_7day_ago = [float(i[3]) for i in RainPercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
 
     axs[2].set_title('Rainfalls', fontsize = 12, fontweight ="bold")
     axs[2].plot([i for i in range(len(rain_today))], rain_today, color='blue', marker='o', linestyle='solid', label='today')
@@ -106,10 +106,10 @@ def charts(area2):
     axs[2].plot([i for i in range(len(rain_7day_ago))], rain_7day_ago, color='lightgray', linestyle=":", label='7 day ago')
     
     all_rain = rain_today+rain_1day_ago+rain_2day_ago+rain_7day_ago
-    rain1 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=today, index_num=num).values_list()]
-    rain2 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
-    rain3 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
-    rain4 = [[float(i[2]),float(i[3])] for i in Rainpercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
+    rain1 = [[float(i[2]),float(i[3])] for i in RainPercent.objects.filter(fcstDate=today, index_num=num).values_list()]
+    rain2 = [[float(i[2]),float(i[3])] for i in RainPercent.objects.filter(fcstDate=day_1_ago, index_num=num).values_list()]
+    rain3 = [[float(i[2]),float(i[3])] for i in RainPercent.objects.filter(fcstDate=day_2_ago, index_num=num).values_list()]
+    rain4 = [[float(i[2]),float(i[3])] for i in RainPercent.objects.filter(fcstDate=day_7_ago, index_num=num).values_list()]
     all_rain2 = rain1+rain2+rain3+rain4
     all_rain2.sort(key=lambda x:x[1])
 
