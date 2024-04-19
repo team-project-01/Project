@@ -1,14 +1,11 @@
-#%%
+import matplotlib
+matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
-import numpy as np
-#from django.utils import timezone
-import time
 import datetime
 from dateutil.relativedelta import relativedelta
 from .models import *
 import os
 from datetime import timedelta
-import numpy as np
 
 #temps=[float(i[3]) for i in forecastData.objects.filter(fcstDate='20240417').values_list()]
 #                    단위값 수정할 곳                조건 수정할 곳
@@ -17,7 +14,7 @@ import numpy as np
 # 절대경로
 abspath = os.path.dirname(os.path.abspath(__file__)) 
 abspath = abspath.replace('\\','/')
-abspath = abspath+'/static/graphs/'
+abspath = abspath+'/static/graphs/' #내꺼만!!!!!!!!하고 주석처리해주기
 
 #한글 고딕체
 #plt.rcParams['font.family'] ='Malgun Gothic'
@@ -126,7 +123,10 @@ def charts(area2):
     axs[2].set_ylim(min(all_rain)-4, max(all_rain)+4)
     axs[2].set_xlim(0, 23)
     plt.setp(axs[2], xticks=[3,6,9,12,15,18,21])
+    
+    os.nice(10)
 
     fig.tight_layout()
     plt.savefig(abspath+'all_graph.png', format='png')
-    # plt.show()
+    plt.close()
+    
