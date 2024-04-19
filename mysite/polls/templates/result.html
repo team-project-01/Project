@@ -17,13 +17,6 @@
         <h2>{{ place }}의 기상 그래프</h2>
     </div>
 
-    <div class="center">
-        <!-- 사용자가 지역/기상 정보 선택 후 생성한 그래프 표시 -->
-        <!-- 시각화 함수를 통해 그래프를 생성할 시 생성 이름에 맞추어 이미지를 불러오도록 함 -->
-        <img class='graph' src="{% static 'graphs/all_graph.png' %}" width=1250 alt="{{place}}기상 그래프">
-        <br><br><br>
-        <div>
-
             <!-- 사용자가 지역/기상 정보 선택 후 생성한 그래프 표시 -->
             <!-- 시각화 함수를 통해 그래프를 생성할 시 생성 이름에 맞추어 이미지를 불러오도록 함 -->
             <div class="white">
@@ -34,8 +27,7 @@
             <h1>최대 풍속{{ wind_max }}m/s</h1>
             <h1>최저 풍속{{ wind_max }}m/s</h1>
             <h1>최대 강수량{{ rain_max }}mm</h1>
-            <h1>최저 강수량{{ rain_min }}mm</h1> 
-                    {{}} 필요하신 부분으로 사용하시면 됩니다 !-->
+            <h1>최저 강수량{{ rain_min }}mm</h1> 필요하신 부분으로 사용하시면 됩니다 !-->
 
             <p>{{ info_string }}</p>
             <br><br><br>
