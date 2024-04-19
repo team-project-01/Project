@@ -5,6 +5,7 @@ from .utils import (
     yesterday_weather_data,
     get_weather_image,
     index_num_dic,
+    get_weather_info
 )
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -31,64 +32,11 @@ def index(request):
 @csrf_exempt
 def result(request):
     area2 = int(request.POST["area2"])
-    a = yesterday_weather_data(area2)
-    b = today_weather_data(area2)
-
-    time_now = datetime.now()
-    now_date = time_now.strftime("%Y%m%d")
-    now_time = time_now.strftime("%H")
-
-    temperature = (
-        ForecastData.objects.filter(
-            fcstDate=now_date, fcstTime=now_time, index_num=area2
-        )
-        .values("fcstValue")[0]
-        .get("fcstValue")
-    )
-
-    rain_percent = float(
-        RainPercent.objects.filter(
-            fcstDate=now_date, fcstTime=now_time, index_num=area2
-        )
-        .values("fcstValue")[0]
-        .get("fcstValue")
-    )
-
-    if rain_percent > 0:
-        # rain_percent_txt = '오늘 비가오네요! 우산챙기세요! &#9730'
-        rain_percent_txt = "오늘 비가오네요! 우산챙기세요..!"
-    else:
-        rain_percent_txt = "오늘 비소식은 없네요!!"
-
-    wind = float(
-        Wind.objects.filter(fcstDate=now_date, fcstTime=now_time, index_num=area2)
-        .values("fcstValue")[0]
-        .get("fcstValue")
-    )
-
-    if wind > 14:
-        wind_txt = "강풍"
-    else:
-        wind_txt = "선선한 바람"
-
-    info_string = f"지금 기온은 {temperature}도 이고, 풍속은 {str(wind)}m/s로 {wind_txt}이 부는 상태입니다. {rain_percent_txt}"
-
-    # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
-
-    if area2 in index_num_dic:
-
-        #     context = {'place': index_num_dic[area2],'today' : b, 'yesterday' : a }
-        # return render(request, 'polls/result.html', context)
-
-        context = {
-            "place": index_num_dic[area2],
-            "today": b,
-            "yesterday": a,
-            "info_string": info_string,
-            # "rain_percent": rain_percent,
-            # "wind": wind,
-        }
-
+    yesterday_weather_data(area2)
+    today_weather_data(area2)
+    a,b,c = get_weather_info(area2)
+    context = { "a":a, "b":b, "c": c,
+        "place": index_num_dic[area2] }
     # 차트 생성
     charts(area2)
     time.sleep(0.6)  # 이미지 저장시간
