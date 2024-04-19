@@ -11,9 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import time
 from .visualizer import charts
-
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from .serializers import *
 from .models import *
 
@@ -36,6 +33,10 @@ def result(request):
     area2 = int(request.POST["area2"])
     a = yesterday_weather_data(area2)
     b = today_weather_data(area2)
+
+    time_now = datetime.now()
+    now_date = time_now.strftime("%Y%m%d")
+    now_time = time_now.strftime("%H")
 
     temperature = (
         ForecastData.objects.filter(
@@ -66,11 +67,11 @@ def result(request):
     )
 
     if wind > 14:
-        wind_txt = '강풍'
+        wind_txt = "강풍"
     else:
-        wind_txt = '선선한 바람'
+        wind_txt = "선선한 바람"
 
-    info_string = f'지금 기온은 {temperature}도 이고, 풍속은 {str(wind)}m/s로 {wind_txt}이 부는 상태입니다. {rain_percent_txt}'
+    info_string = f"지금 기온은 {temperature}도 이고, 풍속은 {str(wind)}m/s로 {wind_txt}이 부는 상태입니다. {rain_percent_txt}"
 
     # 모든 컨텍스트 변수를 하나의 딕셔너리로 합침
 
@@ -93,28 +94,6 @@ def result(request):
     time.sleep(0.6)  # 이미지 저장시간
 
     return render(request, "result.html", context)
-
-
-time_now = datetime.now()
-now_date = time_now.strftime("%Y%m%d")
-now_time = time_now.strftime("%H")
-
-
-@api_view(["GET"])
-def getTempData(request):
-    # temps_today = [float(i[3]) for i in ForecastData.objects.filter(fcstDate=today, index_num= area2).values_list()]
-
-    # ForecastData.objects.filter(fcstDate=today, index_num= num).values_list()
-    area2 = int(request.POST["area2"])
-    print("-------------------\n")
-    data = ForecastData.objects.filter(
-        fcstDate=now_date, fcstTime=now_time, index_num=area2
-    ).values
-    print("*********************\n")
-    print(data)
-    print()
-    serializer = forecastDataSerializer(data, many=True)
-    return Response(serializer.data)
 
 
 # 그냥 잘 돌아가는지 확인하는 용 http~~~8000/weather 치면 나오는 것
