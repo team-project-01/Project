@@ -2,7 +2,41 @@
 <link rel="stylesheet" href="{% static 'style.css' %}">
 <link rel="shortcut icon" type="image/x-icon" href=" /static/con.png ">
 <html lang="ko">
-
+<style>
+    @font-face {
+    font-family: 'KimjungchulGothic-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulGothic-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    }
+    .top {
+        text-align: center;
+        font-family: 'KimjungchulGothic-Bold';
+        margin-top: 20px;
+        font-size: 50px;
+        text-shadow: 0 0 7px rgba(40, 35, 35, 0.5);
+    }
+    .center {
+        text-align: center;
+        font-family: 'KimjungchulGothic-Bold';
+        font-size: 20px;
+        margin-top: 20px;
+        text-shadow: 0 0 5px rgba(2, 2, 2, 0.5);
+    }
+    .red {
+        color: rgb(255, 73, 41);
+        text-shadow: -1px 0px rgb(0, 0, 0), 0px 1px rgb(0, 0, 0), 1px 0px rgb(0, 0, 0), 0px -1px rgb(0, 0, 0)
+    }
+    .blue{
+        color: rgb(43, 43, 167);
+        text-shadow: -1px 0px rgb(0, 0, 0), 0px 1px rgb(0, 0, 0), 1px 0px rgb(0, 0, 0), 0px -1px rgb(0, 0, 0)
+    
+    }
+    .graph{
+        font-size: 17px;
+        text-shadow: 0 0 5px rgba(242, 226, 226, 0.5);
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     
@@ -15,21 +49,19 @@
     <!-- <div style="text-align : center;" class="graph"></div> -->
 
     <!-- 장소와 날짜에 대한 정보 표시 -->
-    <div class="top">
-        <h1>🌥️ 날씨비교 🌥️</h1>
-    </div>
+    <h1 class="top">🌥️ 날씨비교 🌥️</h1>
 
     <div class="center">
             <h2>{{ place }}의 날씨는</h2>
             <p>{{ a }}</p>
             <p>{{ b }}</p>
             <p>{{ c }}</p>
-            <br><br>
-            <img class='white' src="{% static 'graphs/all_graph.png' %}" width=1250 alt="{{place}}기상 그래프">
-            <p>{{place}}의 날씨 변화 추이 그래프</p>
             <br>
-            <p> 일주일 간 최고기온은 {{ max_temp }}도, 최저기온은 {{ min_temp }}도 입니다. </p>
-            <p> 일주일 간 최고 풍속은 {{ max_wind }}m/s, 최저 풍속은 {{ min_wind }}m/s 입니다. </p>
+            <img class='white' src="{% static 'graphs/all_graph.png' %}" width=1250 alt="{{place}}기상 그래프">
+            <p class="graph">{{place}}의 날씨 변화 추이 그래프</p>
+            <br>
+            <p> 일주일 간 최고기온은 <span class="red">{{ max_temp }}</span> 도, 최저기온은 <span class="red">{{ min_temp }}</span> 도 입니다. </p>
+            <p> 일주일 간 최고 풍속은 <span class="blue">{{ max_wind }}</span> m/s, 최저 풍속은 <span class="blue">{{ min_wind }}</span> m/s 입니다. </p>
             <br>
             <input type="button" class="button" value="뒤로가기" onclick="history.back();" />
             <br>
