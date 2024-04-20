@@ -2,6 +2,7 @@ import urllib.request
 import xml.dom.minidom
 from datetime import datetime, timedelta
 from .models import *
+import re
 
 index_number = {
     90: (87, 140),
@@ -192,6 +193,9 @@ index_num_dic = {
     294: '거제',
     295: '남해'
 }
+def extract_number(text):
+    match = re.search(r'\d+(\.\d+)?', text)
+    return float(match.group()) if match else 0
 
 def today_weather_data(index):
     nx, ny = index_number[index]
@@ -282,12 +286,7 @@ def today_weather_data(index):
                 gangsu = RainPercent()
                 gangsu.fcstDate = fcstDate
                 gangsu.fcstTime = fcstTime
-                #강수 없는 곳은 0으로 처리
-                if fcstValue == '강수없음':
-                    gangsu.fcstValue = 0
-                else:
-                    # gangsu.fcstValue = fcstValue
-                    gangsu.fcstValue = [float(x) for x in fcstValue if x.isdigit()][0]
+                gangsu.fcstValue = extract_number(fcstValue)
                 gangsu.fnx = nx
                 gangsu.fny = ny
                 gangsu.index_num = index
@@ -307,8 +306,8 @@ def today_weather_data(index):
                 wwind.indexname = index_num_dic[index]
                 wwind.save()
 
-        # return url
-        return "오늘날씨 불러오기 성공"
+        return url
+        #return "오늘날씨 불러오기 성공"
     else:  # 실패시 -> 에러코드 출력
         res = dom.getElementsByTagName("returnAuthMsg")
         return f"Error Code: {res}"
@@ -406,8 +405,8 @@ def yesterday_weather_data(index):
             wwind.indexname = index_num_dic[index]
             wwind.save()
 
-        # return rescode
-        return "과거날씨 불러오기 성공"
+        return url
+        #return "과거날씨 불러오기 성공"
     else:  # 실패시 -> 에러코드 출력
         res = dom.getElementsByTagName("resultMsg")
         return f"Error Code: {res}"
