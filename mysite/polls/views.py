@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import time
-from .visualizer import charts, min_max_rain, min_max_wind, min_max_temps
+from .visualizer import charts, min_max_wind, min_max_temps
 from .serializers import *
 from .models import *
 
@@ -60,12 +60,3 @@ def fetch_weather(request):  # 어제꺼부터 받아와야 데이터가 꼬이�
     answer = a + "<br><br><br>" + b
     return HttpResponse(answer)
 
-
-def graph(request):
-    charts()
-    time.sleep(0.5)
-
-    context = {"place": "서울"}
-
-    # 템플릿에 context를 전달
-    return render(request, "polls/graph.html", context)
