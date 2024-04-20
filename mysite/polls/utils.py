@@ -286,7 +286,8 @@ def today_weather_data(index):
                 if fcstValue == '강수없음':
                     gangsu.fcstValue = 0
                 else:
-                    gangsu.fcstValue = fcstValue    
+                    # gangsu.fcstValue = fcstValue
+                    gangsu.fcstValue = [float(x) for x in fcstValue if x.isdigit()][0]
                 gangsu.fnx = nx
                 gangsu.fny = ny
                 gangsu.index_num = index
