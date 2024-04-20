@@ -1,4 +1,5 @@
 import matplotlib
+# matplotlib.use('Qt5Agg') #맥에서 돌아가기 위해 필요한 코드 #윈도우는 붙이면 오류남
 import matplotlib.pyplot as plt
 import datetime
 from .models import *
@@ -6,10 +7,6 @@ import os
 from datetime import timedelta
 import numpy as np
 import matplotlib.patches as patches
-
-#temps=[float(i[3]) for i in ForecastData.objects.filter(fcstDate='20240417').values_list()]
-#                    단위값 수정할 곳                조건 수정할 곳
-#        (ForecastData, RainPercent, Wind)
 
 # 절대경로
 abspath = os.path.dirname(os.path.abspath(__file__)) 
