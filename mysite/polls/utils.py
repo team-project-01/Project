@@ -201,9 +201,9 @@ def today_weather_data(index):
     nx, ny = index_number[index]
     encodingKey = "QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D"
 
-    # now = datetime.now() + timedelta(hours=9)
-    now = datetime.now()
-    base_date = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
+    #now = datetime.now() + timedelta(hours=9) #맥 시간
+    now = datetime.now() #윈도우 시간
+    base_date = (now - timedelta(days=1)).strftime("%Y%m%d")
     update_time = [2, 5, 8, 11, 14, 17, 20, 23]
     # 단기예보
     # Base_time : 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300 (1일 8회)
@@ -255,8 +255,7 @@ def today_weather_data(index):
         dom = xml.dom.minidom.parseString(pretty_res)
         tag_name = "item"
         elements = dom.getElementsByTagName(tag_name)
-        result = ""
-
+        
         for elem in elements:  # 각 'item' 요소에 대해
             fcstDate = elem.getElementsByTagName("fcstDate")[0].firstChild.data
             fcstTime = elem.getElementsByTagName("fcstTime")[0].firstChild.data[:2]
@@ -315,8 +314,10 @@ def today_weather_data(index):
 
 def yesterday_weather_data(index):
     nx, ny = index_number[index]
-    yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y%m%d")
-    start = (datetime.today() - timedelta(days=7)).strftime("%Y%m%d")
+    # now = datetime.now() + timedelta(hours=9) #맥 시간
+    now = datetime.now() #윈도우 시간
+    yesterday = (now - timedelta(days=1)).strftime("%Y%m%d")
+    start = (now - timedelta(days=7)).strftime("%Y%m%d")
 
     encodingKey = "QkWF79xLl9MK1KDi2VAOG%2Fq8vEgL%2BCMNmgYBxF23Hei%2FIfa4VMfNNOs8TFUlS2PcgDVg2AOwexAou5Ffl5C43w%3D%3D"
 
@@ -339,7 +340,6 @@ def yesterday_weather_data(index):
         dom = xml.dom.minidom.parseString(pretty_res)
         tag_name = "item"
         elements = dom.getElementsByTagName(tag_name)
-        result = ""
 
         for elem in elements:  # 각 'item' 요소에 대해
 
@@ -415,7 +415,8 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
     obs_dict = {'강수량': 'precip', '기온': 'temp', '바람': 'wind'}
     # 원하는 값
     obs_str = obs_dict.get(target_obs)
-    time_now = datetime.now()
+    #time_now = datetime.now() + timedelta(hours=9) #맥 시간
+    time_now = datetime.now() #윈도우 시간
     year = time_now.strftime("%Y")
     month = time_now.strftime("%m")
     date = time_now.strftime("%d")
@@ -447,7 +448,8 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
     return BASE_URL, WEATHER_SITE
 
 def get_weather_info(area2):
-    time_now = datetime.now()
+    time_now = datetime.now() + timedelta(hours=9) #맥 시간
+    # time_now = datetime.now() #윈도우 시간
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
     now_date = time_now.strftime("%Y%m%d")
     now_time = time_now.strftime("%H")
@@ -476,7 +478,6 @@ def get_weather_info(area2):
     )
 
     if rain_percent > 0:
-        # rain_percent_txt = '오늘 비가오네요! 우산챙기세요! &#9730'
         rain_percent_txt = "비가 올 것 같아요! 우산챙기세요..!☔️"
     else:
         rain_percent_txt = "비소식은 없네요☀️"
