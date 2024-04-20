@@ -194,9 +194,7 @@ index_num_dic = {
     295: '남해'
 }
 def extract_number(text):
-    # 정규 표현식을 사용하여 문자열에서 첫 번째로 나타나는 숫자 찾기
     match = re.search(r'\d+(\.\d+)?', text)
-    # 매치가 있으면 숫자로 변환, 없으면 0 반환
     return float(match.group()) if match else 0
 
 def today_weather_data(index):
