@@ -1,9 +1,27 @@
+@font-face {
+  font-family: 'KimjungchulGothic-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulGothic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'KCC-Hanbit';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/KCC-Hanbit.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+h1 {
+  margin-top: 80px;
+  font-size: 50px;
+  text-shadow: #1f2039 0 0 10px;
+}
 html{
 	margin: 0;
 	padding: 0;
   }
 
 body {
+  font-family: 'KimjungchulGothic-Bold';
 	width: 100%;
   height: 100%;
 	min-width: 1400px;
@@ -12,11 +30,10 @@ body {
 	padding: 0;
   text-align: center;
 	align-items: center;
-	background: #16a085;
 	background: linear-gradient(
 	213deg,
-	#30336b 0%,
-	#16a085 100%
+	#b998ff 0%,
+	#dece7e 100%
 	) fixed;    
     color: white;
 
@@ -27,9 +44,6 @@ div {
   height: 100%;
 }
 
-p {
-  font-size: 1.4em;
-}
 
 section {
 	padding-bottom: 80px; /* footer의 height값과 동일 */
@@ -49,11 +63,22 @@ section {
 	line-height: 120px;
 }
 
-.middle{
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.middle {
+  position: relative; /* 가상 요소 위치를 위해 필요 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 80px auto;  /* 상단 마진과 좌우 자동 마진 설정 */
+  background: #ffffff4d;  /* 배경색 설정 */
+  padding-top: 28px;  /* 내부 패딩 추가 */
+  padding-bottom: 20px;  /* 내부 패딩 추가 */
+  border-radius: 1000px;  /* 모서리 둥글게 */
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);  /* 그림자 효과 추가 */
+  width: 100%;  /* 너비 100%로 설정 */
+  max-width: 1109px;  /* 최대 너비 설정 */
+  overflow: hidden;  /* 내부 요소가 박스를 벗어나지 않도록 */
 }
+
 
 .bottom {
 	width: 100%;
@@ -66,26 +91,22 @@ section {
 }
 
 .left {
-  width: 576px;
+  text-shadow: #303148 0 0 8px;
+  width: 300px;
   height: 493.2px;
   float: left;
-	background-image: url('cloud.svg');
 	background-size: cover;
   margin: 10px;
 }
 
 .right {
+  text-shadow: #303148 0 0 5px;
 	width: 420px;
-	height: 493.2px;  
+	height: auto;  
 	float: right;
 	box-sizing: border-box;
-  margin-right: 15%;
   padding: 2%;
-  background: #76e2cd;
-  border-style:solid;
   border-width:14px;
-  border-color:#69c5c8;
-  border-radius: 40px;
   margin: 10px;
 }
 
@@ -110,12 +131,22 @@ section {
   width: 100%;
   height: 50px;
 }
-
+h3{
+  font-size: 26px;
+  color: rgb(255, 255, 255);
+}
+.HI{
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+}
 .selectBox {
 	width: 150px;
 	height: 35px;
-	border-radius: 4px;
-	border: 2px solid #139077;
+	border-radius: 10px;
+	border: 3px solid #c9c0ff;
+  background: #ffffff;
+  font-family: 'KCC-Hanbit';
+  color : #413f3f;
 }
 
 .selectBox .select {
@@ -130,18 +161,34 @@ section {
 .button {
 	width: 80px;
 	height: 30px;
-	border-radius: 4px;
-	border: 2px solid #139077;
+	border-radius: 10px;
+	border: 3px solid #c9c0ff;
   background: #ffffff;
   display :inline-block;
+  margin-left: 20px;
+  font-family: 'KCC-Hanbit';
+  color: rgb(83, 58, 58)
+}
+.button1 {
+	width: 80px;
+	height: 30px;
+	border-radius: 10px;
+	border: 3px solid #c9c0ff;
+  background: #ffffff;
+  display :inline-block;
+  margin-top: 20px;
+  font-family: 'KCC-Hanbit';
+  color: rgb(27, 19, 19);
 }
 .button.active {
   width: 80px;
 	height: 30px;
-	border-radius: 4px;
-	border: 2px solid #139077;
-  background: #139077;
-  color: white;
+	border-radius: 10px;
+  border: 3px solid #ff89ce;
+  background: #ffb1dc;
+  color: rgb(255, 255, 255);
+  text-shadow: #ff0a89 0 0 2px;
+  font-family: 'KCC-Hanbit';
 }
 
 
@@ -153,7 +200,7 @@ section {
     background: white;
     border-style:solid;
     border-width:10px;
-    border-color:#b3f5e8;
+    border-color:#f3d3ff;
     border-radius: 30px;
     margin: auto;
     display: block;
@@ -167,11 +214,47 @@ footer{
 	align-items: center;
 	justify-content: center;
   }
-  .footer-message{
-	font-size: 15px;
+
+
+
+.footer-message1 {
+    display: flex;
+    justify-content: center; /* div 전체를 중앙 정렬 */
+    align-items: center;
+    text-decoration: none;
+	font-family: 'Minhye';
+  font-size: 23px;
+  font-family: 'KimjungchulGothic-Bold';
+}
+
+.footer-message1 a {
+  display: inline-flex; /* a 태그 내의 내용을 inline-flex로 설정 */
+  align-items: center;
+  text-decoration: none; /* 밑줄 제거 */
+  color:#fffb11;
+  
+}
+
+.footer-message1 a img {
+    margin: 0 5px; /* 이미지와 텍스트 사이 간격 */
+}
+
+.footer-message2{
+	font-size: 20ßpx;
 	color:#ffffff;
 	margin:0.1rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-  }
+	text-decoration: none !important;
+}
+
+.HI{
+  font-size: 24px;
+  color: rgb(255, 255, 255);
+}
+
+p {
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+}
