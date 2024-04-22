@@ -448,8 +448,8 @@ def get_weather_image(target_obs): # 찾고 싶은 관측값 입력
     return BASE_URL, WEATHER_SITE
 
 def get_weather_info(area2):
-    time_now = datetime.now() + timedelta(hours=9) #맥 시간
-    # time_now = datetime.now() #윈도우 시간
+    #time_now = datetime.now() + timedelta(hours=9) #맥 시간
+    time_now = datetime.now() #윈도우 시간
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
     now_date = time_now.strftime("%Y%m%d")
     now_time = time_now.strftime("%H")
